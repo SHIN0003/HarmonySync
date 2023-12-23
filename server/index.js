@@ -17,6 +17,10 @@ app.post("/post_name" , cors(), async (req, res) => {
     res.json({ name });
 });
 
+app.get("/home", cors(), async (req, res) => {
+    res.send("This is data for home page");
+});
+
 app.listen(port, () => {
     console.log(`Server listening on port http://localhost:${port}`);
 });
