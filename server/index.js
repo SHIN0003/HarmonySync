@@ -1,26 +1,66 @@
 const express = require('express');
-const app = express();
-const port = 3000;
+const SpotifyWebApi = require('spotify-web-api-node');
+require('dotenv').config();
 const cors = require('cors');
+const path = require('path');
+const app = express();
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../client/build')));
 
-app.use(express.urlencoded ({ extended: true }));
-app.use(express.json());
-app.use(cors());
-
-app.get('/', cors(), async (req, res) => {
-    res.send('How');
+// Your Spotify credentials set in the .env file
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
-app.post("/post_name" , cors(), async (req, res) => {
-    const name = req.body.name;
-    console.log(name);
-    res.json({ name });
+app.get('/home', cors(), async (req, res) => {
+  res.send("This is data for home page");
 });
 
-app.get("/home", cors(), async (req, res) => {
-    res.send("This is data for home page");
+// Redirect users to this endpoint for Spotify login
+app.get('/login', (req, res) => {
+  const scopes = ['user-read-private', 'user-read-email', 'playlist-read-private'];
+  res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
+// Spotify will redirect users to this endpoint after login
+app.get('/callback', (req, res) => {
+  const error = req.query.error;
+  const code = req.query.code;
+
+  if (error) {
+    console.error('Callback Error:', error);
+    res.send(`Callback Error: ${error}`);
+    return;
+  }
+
+  spotifyApi.authorizationCodeGrant(code).then(data => {
+    const accessToken = data.body['access_token'];
+    const refreshToken = data.body['refresh_token'];
+    const expiresIn = data.body['expires_in'];
+
+    spotifyApi.setAccessToken(accessToken);
+    spotifyApi.setRefreshToken(refreshToken);
+
+    console.log('access_token:', accessToken);
+    console.log('refresh_token:', refreshToken);
+
+    // Set the access token on the API object to use it in later calls
+    res.send('Success! You can now close the window.');
+
+  }).catch(error => {
+    console.error('Error getting Tokens:', error);
+    res.send(`Error getting Tokens: ${error}`);
+  });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
+
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Server listening on port http://localhost:${port}`);
+  console.log(`Listening at http://localhost:${port}`);
 });

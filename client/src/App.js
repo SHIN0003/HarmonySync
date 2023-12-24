@@ -19,6 +19,11 @@ function App() {
     getHome();
   }, []);
 
+  function handleLogin() {
+    window.location.href = 'http://localhost:3000/login';
+    console.log('login')
+  }
+
   async function postName() {
     try {
       // Using Axios for POST request
@@ -32,9 +37,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <input type="text" value={name} onChange={e => setName(e.target.value)} />
-        <button onClick={postName}>Submit</button>
         <p>{home}</p>
+        <button onClick={handleLogin}>Login</button>
       </header>
     </div>
   );
