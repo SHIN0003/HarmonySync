@@ -1,29 +1,32 @@
 import './App.css';
 import React, { useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
   const [name, setName] = React.useState("");
-  const[home, setHome] = React.useState("");
+  const [home, setHome] = React.useState("");
 
   useEffect(() => {
+    // Using Axios for GET request
     async function getHome() {
-      const response = await fetch('http://localhost:3000/home');
-      const content = await response.text();
-      setHome(content);
+      try {
+        const response = await axios.get('http://localhost:3000/home');
+        setHome(response.data); // Axios automatically handles the response as JSON
+      } catch (error) {
+        console.error('Error fetching home data:', error);
+      }
     }
     getHome();
   }, []);
 
   async function postName() {
-    const response = await fetch('http://localhost:3000/post_name', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name })
-    });
-    const content = await response.json();
-    console.log(content);
+    try {
+      // Using Axios for POST request
+      const response = await axios.post('http://localhost:3000/post_name', { name });
+      console.log(response.data); // Axios automatically handles sending data as JSON
+    } catch (error) {
+      console.error('Error posting name:', error);
+    }
   }
 
   return (
@@ -36,4 +39,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
