@@ -4,6 +4,7 @@ require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
 const app = express();
+let arr = ["hello", "world"];
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -16,6 +17,7 @@ const spotifyApi = new SpotifyWebApi({
 
 app.get('/home', cors(), async (req, res) => {
   res.send("This is data for home page");
+  //res.send(arr);
 });
 
 // Redirect users to this endpoint for Spotify login
@@ -60,7 +62,7 @@ app.get('*', (req, res) => {
 });
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });

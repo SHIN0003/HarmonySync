@@ -10,7 +10,7 @@ function App() {
     // Using Axios for GET request
     async function getHome() {
       try {
-        const response = await axios.get('http://localhost:3000/home');
+        const response = await axios.get('http://localhost:3001/home');
         setHome(response.data); // Axios automatically handles the response as JSON
       } catch (error) {
         console.error('Error fetching home data:', error);
@@ -20,14 +20,14 @@ function App() {
   }, []);
 
   function handleLogin() {
-    window.location.href = 'http://localhost:3000/login';
-    console.log('login')
+    window.open('http://localhost:3001/login', '_blank');
+    console.log('testing')
   }
 
   async function postName() {
     try {
       // Using Axios for POST request
-      const response = await axios.post('http://localhost:3000/post_name', { name });
+      const response = await axios.post('http://localhost:3001/post_name', { name });
       console.log(response.data); // Axios automatically handles sending data as JSON
     } catch (error) {
       console.error('Error posting name:', error);
