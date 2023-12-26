@@ -4,9 +4,17 @@ require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
 const app = express();
+app.use(cors());
+const session = require('express-session');
 let arr = ["hello", "world"];
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.use(session({
+  secret: process.env.SPOTIFY_CLIENT_SECRET,
+  resave: false,
+  saveUninitialized: true,
+}));
 
 // Your Spotify credentials set in the .env file
 const spotifyApi = new SpotifyWebApi({
@@ -26,6 +34,24 @@ app.get('/login', (req, res) => {
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
+app.post('/logout', cors(), (req, res) => {
+  console.log("Logout endpoint hit"); // Step 2
+  console.log(req.session); // Step 3
+
+  req.session.destroy((err) => {
+    if (err) {
+      // Handle error - the session was not destroyed
+      res.status(500).send('Could not log out, please try again');
+    } else {
+      // Session destroyed, reset credentials
+      spotifyApi.resetCredentials();
+
+      // Send the response
+      res.send("Logged out");
+    }
+  });
+});
+
 // Spotify will redirect users to this endpoint after login
 app.get('/callback', (req, res) => {
   const error = req.query.error;
@@ -41,6 +67,14 @@ app.get('/callback', (req, res) => {
     const accessToken = data.body['access_token'];
     const refreshToken = data.body['refresh_token'];
     const expiresIn = data.body['expires_in'];
+
+    req.session.user = {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      expiresIn: expiresIn,
+    };
+
+    console.log(req.session)
 
     spotifyApi.setAccessToken(accessToken);
     spotifyApi.setRefreshToken(refreshToken);
@@ -58,7 +92,7 @@ app.get('/callback', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 

@@ -23,14 +23,14 @@ function App() {
     window.open('http://localhost:3001/login', '_blank');
     console.log('testing')
   }
-
-  async function postName() {
+  
+  async function handleLogout() {
     try {
-      // Using Axios for POST request
-      const response = await axios.post('http://localhost:3001/post_name', { name });
-      console.log(response.data); // Axios automatically handles sending data as JSON
+      const res = await axios.post('http://localhost:3001/logout');
+      console.log("logged out")
+      console.log(res)
     } catch (error) {
-      console.error('Error posting name:', error);
+      console.error('Error logging out:', error);
     }
   }
 
@@ -39,6 +39,7 @@ function App() {
       <header className="App-header">
         <p>{home}</p>
         <button onClick={handleLogin}>Login</button>
+        <button onClick={handleLogout}>Logout</button>
       </header>
     </div>
   );
