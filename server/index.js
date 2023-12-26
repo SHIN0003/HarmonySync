@@ -11,10 +11,11 @@ let arr = ["hello", "world"];
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use(session({
-  secret: process.env.SPOTIFY_CLIENT_SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
 }));
+
 
 // Your Spotify credentials set in the .env file
 const spotifyApi = new SpotifyWebApi({
