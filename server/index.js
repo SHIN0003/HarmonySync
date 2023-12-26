@@ -16,7 +16,6 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-
 // Your Spotify credentials set in the .env file
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -24,7 +23,37 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
-app.get('/home', cors(), async (req, res) => {
+const tokenRefreshMiddleware = (req, res, next) => {
+  const now = new Date().getTime();
+  if (req.session.user && req.session.user.expiryTime && req.session.user.expiryTime - now < 60000) { // 60 seconds buffer
+      // Refresh the token
+      spotifyApi.setRefreshToken(req.session.user.refreshToken);
+      spotifyApi.refreshAccessToken().then(data => {
+          req.session.user.accessToken = data.body['access_token'];
+          req.session.user.expiryTime = now + data.body['expires_in'] * 1000;
+
+          spotifyApi.setAccessToken(data.body['access_token']);
+
+          next();
+      }).catch(error => {
+          console.error('Error refreshing access token', error);
+          res.status(401).send('Unauthorized');
+      });
+  } else {
+      next();
+  }
+};
+
+app.get('/v1/me', tokenRefreshMiddleware, (req, res) => {
+  spotifyApi.getMe().then(data => {
+    res.send(data.body);
+  }).catch(error => {
+    console.error('Error getting user', error);
+    res.status(500).send('Error getting user');
+  });
+});
+
+app.get('/home', async (req, res) => {
   res.send("This is data for home page");
   //res.send(arr);
 });
@@ -33,9 +62,9 @@ app.get('/home', cors(), async (req, res) => {
 app.get('/login', (req, res) => {
   const scopes = ['user-read-private', 'user-read-email', 'playlist-read-private'];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
-});
+}); 
 
-app.post('/logout', cors(), (req, res) => {
+app.post('/logout', (req, res) => {
   console.log("Logout endpoint hit"); // Step 2
   console.log(req.session); // Step 3
 
@@ -68,11 +97,13 @@ app.get('/callback', (req, res) => {
     const accessToken = data.body['access_token'];
     const refreshToken = data.body['refresh_token'];
     const expiresIn = data.body['expires_in'];
+    const expiryTime = new Date().getTime() + expiresIn * 1000;
 
     req.session.user = {
       accessToken: accessToken,
       refreshToken: refreshToken,
       expiresIn: expiresIn,
+      expiryTime: expiryTime
     };
 
     console.log(req.session)
@@ -84,7 +115,8 @@ app.get('/callback', (req, res) => {
     console.log('refresh_token:', refreshToken);
 
     // Set the access token on the API object to use it in later calls
-    res.send('Success! You can now close the window.');
+    //res.send('Success! You can now close the window.');
+    res.redirect(`http://localhost:3000?loggedIn=true`);
 
   }).catch(error => {
     console.error('Error getting Tokens:', error);
