@@ -16,7 +16,6 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-// Your Spotify credentials set in the .env file
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
@@ -46,6 +45,7 @@ const tokenRefreshMiddleware = (req, res, next) => {
 
 app.get('/v1/me', tokenRefreshMiddleware, (req, res) => {
   spotifyApi.getMe().then(data => {
+    console.log(data.body);
     res.send(data.body);
   }).catch(error => {
     console.error('Error getting user', error);
@@ -62,25 +62,19 @@ app.get('/home', async (req, res) => {
 app.get('/login', (req, res) => {
   const scopes = ['user-read-private', 'user-read-email', 'playlist-read-private'];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
+  
 }); 
 
 app.post('/logout', (req, res) => {
-  console.log("Logout endpoint hit"); // Step 2
-  console.log(req.session); // Step 3
-
   req.session.destroy((err) => {
     if (err) {
-      // Handle error - the session was not destroyed
       res.status(500).send('Could not log out, please try again');
     } else {
-      // Session destroyed, reset credentials
-      spotifyApi.resetCredentials();
-
-      // Send the response
       res.send("Logged out");
     }
   });
 });
+
 
 // Spotify will redirect users to this endpoint after login
 app.get('/callback', (req, res) => {

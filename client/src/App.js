@@ -15,6 +15,7 @@ function App() {
         try {
           const response = await axios.get('http://localhost:3001/v1/me');
           setUser(response.data); // Axios automatically handles the response as JSON
+          
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
@@ -22,8 +23,17 @@ function App() {
       getUser();
     }
   }, [isLoggedIn]);
-    
- 
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('loggedIn') === 'true') {
+      setIsLoggedIn(true);
+      // Optionally, clear the query params from the URL
+    }
+    else {
+      setIsLoggedIn(false);
+    }
+  }, []);
   
   useEffect(() => {
     // Using Axios for GET request
@@ -46,7 +56,6 @@ function App() {
     try {
       await axios.post('http://localhost:3001/logout').then(res => {
         setIsLoggedIn(false);
-        console.log("logged out")
         console.log(res)
       });
     } catch (error) {
@@ -58,12 +67,21 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>{home}</p>
-        {user && <p>{user.display_name}</p>}
-        <button onClick={handleLogin}>Login</button>
-        <button onClick={handleLogout}>Logout</button>
+        {isLoggedIn ? (
+          <div>
+            {user ? <p>Welcome, {user.display_name}</p> : <p>Loading user data...</p>}
+            {/* Other user information */}
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        ) : (
+          <div>
+            <p>Please log in.</p>
+            <button onClick={handleLogin}>Login</button>
+          </div>
+        )}
       </header>
     </div>
-  );
+  );  
 }
 
 export default App;
