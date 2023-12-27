@@ -12,6 +12,32 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.App-header {
+  display: flex;
+  justify-content: space-between;
+  /* Other styles */
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-image {
+  width: 50px; /* Adjust as needed */
+  height: 50px; /* Adjust as needed */
+  border-radius: 50%; /* Circular image */
+  margin-right: 10px;
+}
+
+.user-name {
+  margin-right: 20px;
+}
 
 .App-header {
   background-color: #282c34;

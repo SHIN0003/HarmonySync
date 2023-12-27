@@ -66,22 +66,24 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>{home}</p>
-        {isLoggedIn ? (
-          <div>
-            {user ? <p>Welcome, {user.display_name}</p> : <p>Loading user data...</p>}
-            {/* Other user information */}
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-        ) : (
-          <div>
-            <p>Please log in.</p>
+        <div className="top-right">
+          {isLoggedIn && user && (
+            <div className="user-info">
+              <img src={user.images[0].url} alt="User" className="user-image" />
+              <p className="user-name">{user.display_name}</p>
+              <button onClick={handleLogout}>Logout</button>
+            </div>
+          )}
+
+          {!isLoggedIn && (
             <button onClick={handleLogin}>Login</button>
-          </div>
-        )}
+          )}
+        </div>
+
+        <p>{home}</p>
       </header>
     </div>
-  );  
+  );
 }
 
 export default App;

@@ -74,8 +74,6 @@ app.post('/logout', (req, res) => {
     }
   });
 });
-
-
 // Spotify will redirect users to this endpoint after login
 app.get('/callback', (req, res) => {
   const error = req.query.error;
@@ -100,13 +98,13 @@ app.get('/callback', (req, res) => {
       expiryTime: expiryTime
     };
 
-    console.log(req.session)
+    //console.log(req.session)
 
     spotifyApi.setAccessToken(accessToken);
     spotifyApi.setRefreshToken(refreshToken);
 
-    console.log('access_token:', accessToken);
-    console.log('refresh_token:', refreshToken);
+    // console.log('access_token:', accessToken);
+    // console.log('refresh_token:', refreshToken);
 
     // Set the access token on the API object to use it in later calls
     //res.send('Success! You can now close the window.');
@@ -121,7 +119,6 @@ app.get('/callback', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
-
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
