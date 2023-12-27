@@ -4,7 +4,10 @@ require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // adjust if your frontend port is different
+  credentials: true
+}));
 const session = require('express-session');
 let arr = ["hello", "world"];
 // Serve static files from the React app
@@ -22,6 +25,7 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
+// have to rewrite this to because I am not storing token in spotifyApi object
 const tokenRefreshMiddleware = (req, res, next) => {
   const now = new Date().getTime();
   if (req.session.user && req.session.user.expiryTime && req.session.user.expiryTime - now < 60000) { // 60 seconds buffer
@@ -43,22 +47,31 @@ const tokenRefreshMiddleware = (req, res, next) => {
   }
 };
 
-app.get('/v1/me', tokenRefreshMiddleware, (req, res) => {
-  spotifyApi.getMe().then(data => {
-    console.log(data.body);
-    res.send(data.body);
-  }).catch(error => {
-    console.error('Error getting user', error);
-    res.status(500).send('Error getting user');
-  });
+app.get('/api/token', (req, res) => {
+  if (req.session.user && req.session.user.accessToken) {
+    console.log("sending token")
+    res.json({ accessToken: req.session.user.accessToken });
+  } else {
+    res.status(401).json({ error: 'Unauthorized: No active session' });
+  }
 });
+
+// app.get('/v1/me', tokenRefreshMiddleware, (req, res) => {
+//   spotifyApi.getMe().then(data => {
+//     //console.log(data.body);
+//     res.send(data.body);
+//   }).catch(error => {
+//     console.error('Error getting user', error);
+//     res.status(500).send('Error getting user');
+//   });
+// });
 
 app.get('/home', async (req, res) => {
   res.send("This is data for home page");
   //res.send(arr);
 });
 
-// Redirect users to this endpoint for Spotify login
+// Redirect users to this endpoint for Spotify login, then redirect them to the /callback endpoint
 app.get('/login', (req, res) => {
   const scopes = ['user-read-private', 'user-read-email', 'playlist-read-private'];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
@@ -74,6 +87,7 @@ app.post('/logout', (req, res) => {
     }
   });
 });
+
 // Spotify will redirect users to this endpoint after login
 app.get('/callback', (req, res) => {
   const error = req.query.error;
@@ -98,18 +112,23 @@ app.get('/callback', (req, res) => {
       expiryTime: expiryTime
     };
 
-    //console.log(req.session)
-
-    spotifyApi.setAccessToken(accessToken);
-    spotifyApi.setRefreshToken(refreshToken);
-
-    // console.log('access_token:', accessToken);
-    // console.log('refresh_token:', refreshToken);
-
-    // Set the access token on the API object to use it in later calls
-    //res.send('Success! You can now close the window.');
-    res.redirect(`http://localhost:3000?loggedIn=true`);
-
+    req.session.save(err => {
+      if (err) {
+        console.error('Error saving session:', err);
+        res.send(`Error saving session: ${err}`);
+      } else {
+        
+        // becomes redudnant, as i
+        // spotifyApi.setAccessToken(accessToken);
+        // spotifyApi.setRefreshToken(refreshToken);
+    
+        // console.log('access_token:', accessToken);
+        // console.log('refresh_token:', refreshToken);
+        
+        console.log("saved")
+        res.redirect(`http://localhost:3000?loggedIn=true`);
+      }
+    });
   }).catch(error => {
     console.error('Error getting Tokens:', error);
     res.send(`Error getting Tokens: ${error}`);

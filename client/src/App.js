@@ -7,14 +7,32 @@ function App() {
   const [home, setHome] = React.useState("");
   const [user, setUser] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accessToken, setAccessToken] = useState(null);
+
+  async function fetchTokens() {
+    try {
+      const response = await axios.get('http://localhost:3001/api/token', { withCredentials: true });
+      const accessToken = response.data.accessToken;
+      // Store the access token in the state or context for further use
+      // ...
+      console.log("access token received" + accessToken)
+      setAccessToken(accessToken);
+    } catch (error) {
+      console.error('Error fetching tokens:', error);
+    }
+  }
 
   useEffect(() => {
     // Using Axios for GET request
-    if (isLoggedIn) {
+    if (isLoggedIn && accessToken) {
       async function getUser() {
         try {
-          const response = await axios.get('http://localhost:3001/v1/me');
-          setUser(response.data); // Axios automatically handles the response as JSON
+          console.log(isLoggedIn)
+          console.log("access token in get user")
+          const spotifyResponse = await axios.get('https://api.spotify.com/v1/me', {
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+          });
+          setUser(spotifyResponse.data); // Axios automatically handles the response as JSON
           
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -22,12 +40,13 @@ function App() {
       }
       getUser();
     }
-  }, [isLoggedIn]);
+  }, [accessToken, isLoggedIn]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('loggedIn') === 'true') {
       setIsLoggedIn(true);
+      fetchTokens();
       // Optionally, clear the query params from the URL
     }
     else {
@@ -35,6 +54,7 @@ function App() {
     }
   }, []);
   
+  //home page data
   useEffect(() => {
     // Using Axios for GET request
     async function getHome() {
@@ -48,9 +68,11 @@ function App() {
     getHome();
   }, []);
 
+  //handles login and redirects to spotify login page
   function handleLogin() {
     window.location.href = 'http://localhost:3001/login';
   }
+
   
   async function handleLogout() {
     try {
