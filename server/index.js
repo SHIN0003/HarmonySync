@@ -9,7 +9,6 @@ app.use(cors({
   credentials: true
 }));
 const session = require('express-session');
-let arr = ["hello", "world"];
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -26,26 +25,19 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 // have to rewrite this to because I am not storing token in spotifyApi object
-const tokenRefreshMiddleware = (req, res, next) => {
-  const now = new Date().getTime();
-  if (req.session.user && req.session.user.expiryTime && req.session.user.expiryTime - now < 60000) { // 60 seconds buffer
-      // Refresh the token
-      spotifyApi.setRefreshToken(req.session.user.refreshToken);
-      spotifyApi.refreshAccessToken().then(data => {
-          req.session.user.accessToken = data.body['access_token'];
-          req.session.user.expiryTime = now + data.body['expires_in'] * 1000;
-
-          spotifyApi.setAccessToken(data.body['access_token']);
-
-          next();
-      }).catch(error => {
-          console.error('Error refreshing access token', error);
-          res.status(401).send('Unauthorized');
-      });
-  } else {
-      next();
-  }
-};
+app.post('/refresh', (req, res) => {
+  const refreshToken = req.session.user.refreshToken;
+  spotifyApi.setRefreshToken(refreshToken);
+  spotifyApi.refreshAccessToken().then(data => {
+    res.json({
+      accessToken: data.body['access_token'],
+      expiresIn: data.body['expires_in']
+    });
+  }).catch(error => {
+    console.error('Error refreshing access token:', error);
+    res.status(500).json({ error: 'Error refreshing access token' });
+  });
+} );
 
 app.get('/api/token', (req, res) => {
   if (req.session.user && req.session.user.accessToken) {
@@ -55,16 +47,6 @@ app.get('/api/token', (req, res) => {
     res.status(401).json({ error: 'Unauthorized: No active session' });
   }
 });
-
-// app.get('/v1/me', tokenRefreshMiddleware, (req, res) => {
-//   spotifyApi.getMe().then(data => {
-//     //console.log(data.body);
-//     res.send(data.body);
-//   }).catch(error => {
-//     console.error('Error getting user', error);
-//     res.status(500).send('Error getting user');
-//   });
-// });
 
 app.get('/home', async (req, res) => {
   res.send("This is data for home page");
@@ -116,15 +98,7 @@ app.get('/callback', (req, res) => {
       if (err) {
         console.error('Error saving session:', err);
         res.send(`Error saving session: ${err}`);
-      } else {
-        
-        // becomes redudnant, as i
-        // spotifyApi.setAccessToken(accessToken);
-        // spotifyApi.setRefreshToken(refreshToken);
-    
-        // console.log('access_token:', accessToken);
-        // console.log('refresh_token:', refreshToken);
-        
+      } else {        
         console.log("saved")
         res.redirect(`http://localhost:3000?loggedIn=true`);
       }
