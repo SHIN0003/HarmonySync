@@ -1,11 +1,18 @@
 import './App.css';
+import './index.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 
-function App() {
-  
+import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router-dom";
+
+import Home from "./components/Home/home.js";
+import CustomNavbar from "./components/Navbar/navbar.js";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+const App = () => {
   const [home, setHome] = React.useState("");
   const [user, setUser] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,6 +31,7 @@ function App() {
     }
   }
 
+  // Fetch user data when access token changes
   useEffect(() => {
     // Using Axios for GET request
     if (isLoggedIn && accessToken) {
@@ -42,6 +50,7 @@ function App() {
     }
   }, [accessToken, isLoggedIn]);
 
+  // Checks URL for access token and sets it in state
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('loggedIn') === 'true') {
@@ -110,34 +119,42 @@ function App() {
     }
   }
 
-  return (
-    <div className="App">
-      
-      <header className="App-header">
-        <div className="top-right">
-          {isLoggedIn && user && (
-            <div className="user-info">
-              <img src={user.images[0].url} alt="User" className="user-image" />
-              <p className="user-name">{user.display_name}</p>
-              <button onClick={handleLogout}>Logout</button>
-              
-            </div>
-          )}
 
 
-          {!isLoggedIn && (
-            <button onClick={handleLogin}>Login</button>
-            
-          )}
-        </div>
 
-        <p>{home}</p>
-      </header>
-    </div>
+    const router = createBrowserRouter([
+                                           {
+                                               path: "/home",
+                                               element: <Home
+                                               home={home}
+                                                user={user}
+                                                isLoggedIn={isLoggedIn}
+                                                handleLogin={handleLogin}
+                                                handleLogout={handleLogout}/>,
+                                           },
+                                           {
+                                               path: "/",
+                                               element: <Home
+                                               home={home}
+                                                user={user}
+                                                isLoggedIn={isLoggedIn}
+                                                handleLogin={handleLogin}
+                                                handleLogout={handleLogout}/>,
+                                           },
 
-
-  
-  );
+                                       ]);
+    return (
+      <div>
+        <CustomNavbar
+          home={home}
+          user={user}
+          isLoggedIn={isLoggedIn}
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+        />
+        <RouterProvider router={router} />
+      </div>
+    );
 }
 
 export default App;
