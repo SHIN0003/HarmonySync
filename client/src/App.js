@@ -1,6 +1,7 @@
 import './App.css';
 import './index.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import {AuthContext } from './contexts/authContext';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -13,25 +14,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => {
+  const context = useContext(AuthContext);
   const [home, setHome] = React.useState("");
   const [user, setUser] = React.useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [accessToken, setAccessToken] = useState(null);
+  const { isLoggedIn, accessToken, updateLoginStatus, updateAccessToken, handleLogin, handleLogout, fetchTokens } = useContext(AuthContext);
   const [playlists, setPlaylists] = useState([]);
 
-  async function fetchTokens() {
-    try {
-      const response = await axios.get('http://localhost:3001/api/token', { withCredentials: true });
-      const accessToken = response.data.accessToken;
-      // Store the access token in the state or context for further use
-      // ...
-      return accessToken;
-    } catch (error) {
-      console.error('Error fetching tokens:', error);
-    }
-  }
 
   // Fetch user data when access token changes
+  //NEXT STEP TMRW SET THIS UP IN A DIFFERENT FILE AND IMPORT IT SETTING UP USER
   useEffect(() => {
     // Using Axios for GET request
     if (isLoggedIn && accessToken) {
@@ -54,19 +45,17 @@ const App = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('loggedIn') === 'true') {
-      setIsLoggedIn(true);
-      // Define the async function
-      const fetchAndSetTokens = async () => {
-        const tokens = await fetchTokens();
-        setAccessToken(tokens);
-      };
-      // Call the async function
-      fetchAndSetTokens();
-      // Optionally, clear the query params from the URL
+        // Call fetchTokens and then update the access token
+        const fetchAndSetTokens = async () => {
+            const tokens = await fetchTokens();
+            updateAccessToken(tokens);
+            updateLoginStatus(true);
+        };
+        fetchAndSetTokens();
     } else {
-      setIsLoggedIn(false);
+        updateLoginStatus(false);
     }
-  }, []);
+}, []);
   
   //home page data
   useEffect(() => {
@@ -81,70 +70,40 @@ const App = () => {
     }
     getHome();
   }, []);
-
-  useEffect(() => {
-    fetchUserPlaylists();
-  }, [accessToken, isLoggedIn]);
-
+ 
   //handles login and redirects to spotify login page
-  function handleLogin() {
-    window.location.href = 'http://localhost:3001/login';
-  }
 
-  
-  async function handleLogout() {
-    try {
-      await axios.post('http://localhost:3001/logout').then(res => {
-        setIsLoggedIn(false);
-        setAccessToken(null);
-        console.log(res)
-      });
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  }
-
-  async function fetchUserPlaylists() {
-    if (isLoggedIn && accessToken) {
-      try {
-        const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
-          }
-        });
-        setPlaylists(response.data.items); // Assuming the playlists are in the 'items' array
-      } catch (error) {
-        console.error('Error fetching playlists:', error);
-      }
-    }
-  }
-
+  // async function fetchUserPlaylists() {
+  //   if (isLoggedIn && accessToken) {
+  //     try {
+  //       const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
+  //         headers: {
+  //           'Authorization': `Bearer ${accessToken}`
+  //         }
+  //       });
+  //       setPlaylists(response.data.items); // Assuming the playlists are in the 'items' array
+  //     } catch (error) {
+  //       console.error('Error fetching playlists:', error);
+  //     }
+  //   }
+  // }
 
 
 
     const router = createBrowserRouter([
                                            {
                                                path: "/home",
-                                               element: <Home
-                                               home={home}
-                                                user={user}
-                                                isLoggedIn={isLoggedIn}
-                                                handleLogin={handleLogin}
-                                                handleLogout={handleLogout}/>,
+                                               element: <Home/>,
                                            },
                                            {
-                                               path: "/",
-                                               element: <Home
-                                               home={home}
-                                                user={user}
-                                                isLoggedIn={isLoggedIn}
-                                                handleLogin={handleLogin}
-                                                handleLogout={handleLogout}/>,
-                                           },
+                                                path: "/",
+                                                element: <Home/>,
+                                            },
 
                                        ]);
     return (
       <div>
+        //update navbar to pass to pass in user
         <CustomNavbar
           home={home}
           user={user}
