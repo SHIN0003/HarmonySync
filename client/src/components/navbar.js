@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { AuthContext } from '../../contexts/authContext.js';
+import { AuthContext } from '../contexts/authContext.js';
 import { Navbar, Container } from "react-bootstrap";
 
 function CustomNavbar() {

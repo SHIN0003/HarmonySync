@@ -8,9 +8,9 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router-dom";
 
-import Home from "./components/Home/home.js";
-import CustomNavbar from "./components/Navbar/navbar.js";
-import AuthCallback from "./components/AuthCallback/authCallback.js";
+import Home from "./components/home.js";
+import CustomNavbar from "./components/navbar.js";
+import AuthCallback from "./components/authCallback.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -58,8 +58,8 @@ const App = () => {
                                        ]);
     return (
       <div>
-        //update navbar to pass to pass in user
-        <button onClick={handleLogout}>Logout</button>
+        {/* //update navbar to pass to pass in user
+        <button onClick={handleLogout}>Logout</button> */}
         <CustomNavbar/>
         <RouterProvider router={router} />
       </div>

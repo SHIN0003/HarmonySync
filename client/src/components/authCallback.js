@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { AuthContext } from '/Users/andrewtai/Desktop/codingfiles/Express/client/src/contexts/authContext.js';
+import { AuthContext } from '../contexts/authContext';
 
 const AuthCallback = () => {
     const { fetchTokens } = useContext(AuthContext);
