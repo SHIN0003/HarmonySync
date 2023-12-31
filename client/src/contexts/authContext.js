@@ -1,35 +1,18 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext } from 'react';
 import axios from 'axios';
+
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
-    const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
-
-    const updateLoginStatus = (loggedIn) => {
-        setIsLoggedIn(loggedIn);
-        localStorage.setItem('isLoggedIn', loggedIn);
-    };
-
-    const updateAccessToken = (token) => {
-        setAccessToken(token);
-        localStorage.setItem('accessToken', token);
-    };
-
     function handleLogin() {
         window.location.href = 'http://localhost:3001/login';
     }
 
     async function handleLogout() {
         try {
-            await axios.post('http://localhost:3001/logout').then(res => {
-                updateLoginStatus(false);
-                updateAccessToken(null);
-                localStorage.clear();
-                //clear url
-                window.location.href = 'http://localhost:3000';
-                console.log(res);
-            });
+            await axios.post('http://localhost:3001/logout');
+            localStorage.clear();
+            window.location.href = 'http://localhost:3000';
         } catch (error) {
             console.error('Error logging out:', error);
         }
@@ -38,8 +21,10 @@ export const AuthProvider = ({ children }) => {
     async function fetchTokens() {
         try {
           const response = await axios.get('http://localhost:3001/api/token', { withCredentials: true });
-          const accessToken = response.data.accessToken;
-          return accessToken;
+          if (response.data.accessToken) {
+            localStorage.setItem('accessToken', response.data.accessToken);
+            return response.data.accessToken;
+          }
         } catch (error) {
           console.error('Error fetching tokens:', error);
         }
@@ -47,10 +32,6 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            isLoggedIn,
-            accessToken,
-            updateLoginStatus,
-            updateAccessToken,
             handleLogin,
             handleLogout,
             fetchTokens

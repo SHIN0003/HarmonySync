@@ -18,17 +18,13 @@ const App = () => {
   const [home, setHome] = React.useState("");
 
   const { 
-    isLoggedIn, 
-    accessToken, 
-    updateLoginStatus, 
-    updateAccessToken, 
     handleLogin, 
     handleLogout, 
     fetchTokens 
   } = useContext(AuthContext);
     const [playlists, setPlaylists] = useState([]);
 
-  
+
 
   //home page data
   useEffect(() => {
