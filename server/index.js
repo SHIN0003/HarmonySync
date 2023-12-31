@@ -101,7 +101,8 @@ app.get('/callback', (req, res) => {
         res.send(`Error saving session: ${err}`);
       } else {        
         console.log("saved")
-        res.redirect(`http://localhost:3000?loggedIn=true`);
+        // In your Express route after successful authentication
+        res.redirect('http://localhost:3000/auth/callback');
       }
     });
   }).catch(error => {

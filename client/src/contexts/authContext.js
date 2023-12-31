@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import axios from 'axios';
-
+import AuthCallback from '../components/AuthCallback/authCallback';
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {

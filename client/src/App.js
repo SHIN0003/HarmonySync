@@ -10,6 +10,7 @@ import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router-d
 
 import Home from "./components/Home/home.js";
 import CustomNavbar from "./components/Navbar/navbar.js";
+import AuthCallback from "./components/AuthCallback/authCallback.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -71,6 +72,10 @@ const App = () => {
                                            {
                                                 path: "/",
                                                 element: <Home/>,
+                                            },
+                                            {
+                                                path: "/auth/callback",
+                                                element: <AuthCallback />,
                                             },
 
                                        ]);
