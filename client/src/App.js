@@ -28,27 +28,8 @@ const App = () => {
   } = useContext(AuthContext);
     const [playlists, setPlaylists] = useState([]);
 
-
-  // Fetch user data when access token changes
-  //NEXT STEP TMRW SET THIS UP IN A DIFFERENT FILE AND IMPORT IT SETTING UP USER
-
-
-  // Checks URL for access token and sets it in state
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('loggedIn') === 'true') {
-        // Call fetchTokens and then update the access token
-        const fetchAndSetTokens = async () => {
-            const tokens = await fetchTokens();
-            updateAccessToken(tokens);
-            updateLoginStatus(true);
-        };
-        fetchAndSetTokens();
-    } else {
-        updateLoginStatus(false);
-    }
-}, []);
   
+
   //home page data
   useEffect(() => {
     // Using Axios for GET request

@@ -1,6 +1,5 @@
 import React, { createContext, useState } from 'react';
 import axios from 'axios';
-import AuthCallback from '../components/AuthCallback/authCallback';
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -27,6 +26,8 @@ export const AuthProvider = ({ children }) => {
                 updateLoginStatus(false);
                 updateAccessToken(null);
                 localStorage.clear();
+                //clear url
+                window.location.href = 'http://localhost:3000';
                 console.log(res);
             });
         } catch (error) {
