@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
             await axios.post('http://localhost:3001/logout').then(res => {
                 updateLoginStatus(false);
                 updateAccessToken(null);
+                localStorage.clear();
                 console.log(res);
             });
         } catch (error) {

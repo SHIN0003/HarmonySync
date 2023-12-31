@@ -14,32 +14,23 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => {
-  const context = useContext(AuthContext);
   const [home, setHome] = React.useState("");
-  const [user, setUser] = React.useState(null);
-  const { isLoggedIn, accessToken, updateLoginStatus, updateAccessToken, handleLogin, handleLogout, fetchTokens } = useContext(AuthContext);
-  const [playlists, setPlaylists] = useState([]);
+
+  const { 
+    isLoggedIn, 
+    accessToken, 
+    updateLoginStatus, 
+    updateAccessToken, 
+    handleLogin, 
+    handleLogout, 
+    fetchTokens 
+  } = useContext(AuthContext);
+    const [playlists, setPlaylists] = useState([]);
 
 
   // Fetch user data when access token changes
   //NEXT STEP TMRW SET THIS UP IN A DIFFERENT FILE AND IMPORT IT SETTING UP USER
-  useEffect(() => {
-    // Using Axios for GET request
-    if (isLoggedIn && accessToken) {
-      async function getUser() {
-        try {
-          const spotifyResponse = await axios.get('https://api.spotify.com/v1/me', {
-            headers: { 'Authorization': `Bearer ${accessToken}` }
-          });
-          setUser(spotifyResponse.data); // Axios automatically handles the response as JSON
-          
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      }
-      getUser();
-    }
-  }, [accessToken, isLoggedIn]);
+
 
   // Checks URL for access token and sets it in state
   useEffect(() => {
@@ -71,24 +62,6 @@ const App = () => {
     getHome();
   }, []);
  
-  //handles login and redirects to spotify login page
-
-  // async function fetchUserPlaylists() {
-  //   if (isLoggedIn && accessToken) {
-  //     try {
-  //       const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
-  //         headers: {
-  //           'Authorization': `Bearer ${accessToken}`
-  //         }
-  //       });
-  //       setPlaylists(response.data.items); // Assuming the playlists are in the 'items' array
-  //     } catch (error) {
-  //       console.error('Error fetching playlists:', error);
-  //     }
-  //   }
-  // }
-
-
 
     const router = createBrowserRouter([
                                            {
@@ -104,13 +77,8 @@ const App = () => {
     return (
       <div>
         //update navbar to pass to pass in user
-        <CustomNavbar
-          home={home}
-          user={user}
-          isLoggedIn={isLoggedIn}
-          handleLogin={handleLogin}
-          handleLogout={handleLogout}
-        />
+        <button onClick={handleLogout}>Logout</button>
+        <CustomNavbar/>
         <RouterProvider router={router} />
       </div>
     );
