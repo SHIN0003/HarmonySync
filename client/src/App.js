@@ -11,6 +11,7 @@ import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router-d
 import Home from "./components/home.js";
 import CustomNavbar from "./components/navbar.js";
 import AuthCallback from "./components/authCallback.js";
+import Playlists from "./components/playlists.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -54,6 +55,10 @@ const App = () => {
                                                 path: "/auth/callback",
                                                 element: <AuthCallback />,
                                             },
+                                            {
+                                                path: "/playlists",
+                                                element: <Playlists/>,
+                                            }
 
                                        ]);
     return (
