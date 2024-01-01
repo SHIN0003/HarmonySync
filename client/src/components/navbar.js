@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../contexts/authContext.js';
 import { Navbar, Container } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 function CustomNavbar() {
     const { handleLogin, handleLogout,fetchUser } = useContext(AuthContext);

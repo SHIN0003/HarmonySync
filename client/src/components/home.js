@@ -5,23 +5,23 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { AuthContext } from '../contexts/authContext';
-
+import { Link } from 'react-router-dom';
 
 function Home() {
   const { user, handleLogin, handleLogout } = useContext(AuthContext);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const accessToken = localStorage.getItem('accessToken');
 
-  const handleViewPlaylists = () => {
-    window.location.href = 'http://localhost:3000/playlists';
-  };
+  // const handleViewPlaylists = () => {
+  //   window.location.href = 'http://localhost:3000/playlists';
+  // };
 
   return (
     <div className="App">
       <header className="App-header">
         <p>Welcome to Spotify Playlist Generator!</p>
         {isLoggedIn && accessToken ? (
-          <button onClick={handleViewPlaylists}>View Playlists</button>
+          <Link to="/playlists" className="btn btn-primary">View Playlists</Link>
         ) : null}
       </header>
     </div>

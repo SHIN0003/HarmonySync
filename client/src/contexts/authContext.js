@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     async function fetchPlaylists(accessToken) {
         if (accessToken) {
             try {
-                const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
+                const response = await axios.get('https://api.spotify.com/v1/me/playlists?limit=50', {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
                 return response.data;
