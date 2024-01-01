@@ -4,25 +4,15 @@ import { AuthContext } from '../contexts/authContext.js';
 import { Navbar, Container } from "react-bootstrap";
 
 function CustomNavbar() {
-    const { handleLogin, handleLogout } = useContext(AuthContext);
+    const { handleLogin, handleLogout,fetchUser } = useContext(AuthContext);
     const [user, setUser] = useState(null);
 
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const accessToken = localStorage.getItem('accessToken');
 
     useEffect(() => {
-        if (isLoggedIn && accessToken) {
-            async function fetchUser() {
-                try {
-                    const response = await axios.get('https://api.spotify.com/v1/me', {
-                        headers: { 'Authorization': `Bearer ${accessToken}` }
-                    });
-                    setUser(response.data);
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
-                }
-            }
-            fetchUser();
+        if (isLoggedIn && accessToken) {          
+            fetchUser(accessToken).then((user) => setUser(user));
         }
     }, [accessToken]);
 

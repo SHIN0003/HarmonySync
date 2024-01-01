@@ -20,23 +20,38 @@ export const AuthProvider = ({ children }) => {
 
     async function fetchTokens() {
         try {
-          const response = await axios.get('http://localhost:3001/api/token', { withCredentials: true });
-          if (response.data.accessToken) {
-            localStorage.setItem('accessToken', response.data.accessToken);
-            return response.data.accessToken;
-          }
+            const response = await axios.get('http://localhost:3001/api/token', { withCredentials: true });
+            if (response.data.accessToken) {
+                localStorage.setItem('accessToken', response.data.accessToken);
+                return response.data.accessToken;
+            }
         } catch (error) {
-          console.error('Error fetching tokens:', error);
+            console.error('Error fetching tokens:', error);
         }
-      }
+    }
+
+    async function fetchUser(accessToken) {
+        if (accessToken) {
+            try {
+                const response = await axios.get('https://api.spotify.com/v1/me', {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+    }
 
     return (
         <AuthContext.Provider value={{
             handleLogin,
             handleLogout,
-            fetchTokens
+            fetchTokens,
+            fetchUser
         }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
