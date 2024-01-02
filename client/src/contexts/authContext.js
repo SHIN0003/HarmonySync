@@ -69,6 +69,20 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    async function fetchEnergy(trackId, accessToken) {
+        try {
+            const audioFeaturesUrl = `https://api.spotify.com/v1/audio-features/${trackId}`;
+            const response = await axios.get(audioFeaturesUrl, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            const energy = response.data.energy;
+            return energy;
+        }
+        catch (error) {
+            console.error('Error fetching audio features:', error);
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             handleLogin,
@@ -76,7 +90,8 @@ export const AuthProvider = ({ children }) => {
             fetchTokens,
             fetchUser,
             fetchPlaylists,
-            handleBPM
+            handleBPM,
+            fetchEnergy
         }}>
             {children}
         </AuthContext.Provider>

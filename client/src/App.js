@@ -45,35 +45,7 @@ const App = () => {
   }, []);
  
 
-    const router = createBrowserRouter([
-                                           {
-                                               path: "/home",
-                                               element: <Home/>,
-                                           },
-                                           {
-                                                path: "/",
-                                                element: <Home/>,
-                                            },
-                                            {
-                                                path: "/auth/callback",
-                                                element: <AuthCallback />,
-                                            },
-                                            {
-                                                path: "/playlists",
-                                                element: <Playlists/>,
-                                            }
-                                            ,
-                                            {
-                                                path: "/songs/:playlistId",
-                                                element: <Songs/>,
-                                            }
-                                            ,
-                                            {
-                                                path: "/bpmCreate:trackId",
-                                                element: <Bpmcreate/>,
-                                            }
 
-                                       ]);
     return (
       <BrowserRouter>
         <CustomNavbar/>
