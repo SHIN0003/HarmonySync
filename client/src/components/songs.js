@@ -67,27 +67,31 @@ const Songs = () => {
                 </Row>
                 <Row className="mt-4">
                     <ListGroup>
-                        {tracks.map((track, index) => (
-                            <ListGroup.Item 
-                                key={track.track.id + index}
-                                style={{
-                                    marginBottom: '10px', 
-                                    transition: 'transform 0.2s',
-                                    cursor: 'pointer'
-                                }}
-                                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-                                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                onClick={() => handleBPM(track.track.id, accessToken)} // Add the onClick event handler here
+                        {tracks.map((track, index) => ( // Removed index from the parameters if it's not being used elsewhere
+                            <Link 
+                                to={`/bpmCreate/${track.track.id}`} 
+                                key={track.track.id + index} // Moved the key here
+                                style={{ textDecoration: 'none' }}
                             >
-                                {index + 1}. {track.track.name} by {track.track.artists.map(artist => artist.name).join(', ')}
-                            </ListGroup.Item>
+                                <ListGroup.Item 
+                                    style={{
+                                        marginBottom: '10px', 
+                                        transition: 'transform 0.2s',
+                                        cursor: 'pointer'
+                                    }}
+                                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+                                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                >
+                                    {index + 1} {track.track.name} by {track.track.artists.map(artist => artist.name).join(', ')}
+                                </ListGroup.Item>
+                            </Link>
                         ))}
                     </ListGroup>
                 </Row>
             </>
         )}
     </Container>
-    );  
+);  
 };
 
 export default Songs;

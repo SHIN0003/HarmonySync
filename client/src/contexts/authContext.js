@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
             }
         }
     }
-
+    
     async function handleBPM(trackId, accessToken) {
         try {
             const audioFeaturesUrl = `https://api.spotify.com/v1/audio-features/${trackId}`;
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
                 headers: { 'Authorization': `Bearer ${accessToken}` }
             });
             const tempo = response.data.tempo;
-            console.log(`Tempo (BPM) of the track: ${tempo}`);
+            return tempo;
         } catch (error) {
             console.error('Error fetching audio features:', error);
         }

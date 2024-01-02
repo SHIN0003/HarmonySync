@@ -13,6 +13,8 @@ import CustomNavbar from "./components/navbar.js";
 import AuthCallback from "./components/authCallback.js";
 import Playlists from "./components/playlists.js";
 import Songs from "./components/songs.js";
+import Bpmcreate from "./components/bpmCreate.js";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -65,6 +67,11 @@ const App = () => {
                                                 path: "/songs/:playlistId",
                                                 element: <Songs/>,
                                             }
+                                            ,
+                                            {
+                                                path: "/bpmCreate:trackId",
+                                                element: <Bpmcreate/>,
+                                            }
 
                                        ]);
     return (
@@ -76,6 +83,7 @@ const App = () => {
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/songs/:playlistId" element={<Songs />} />
+          <Route path="/bpmcreate/:trackId" element={<Bpmcreate/>} />
           {/* Add more routes as needed */}
         </Routes>
       </BrowserRouter>
