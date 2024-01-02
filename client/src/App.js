@@ -14,6 +14,7 @@ import AuthCallback from "./components/authCallback.js";
 import Playlists from "./components/playlists.js";
 import Songs from "./components/songs.js";
 import Bpmcreate from "./components/bpmCreate.js";
+import GeneratePlaylist from "./components/generatePlaylist.js";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -56,6 +57,7 @@ const App = () => {
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/songs/:playlistId" element={<Songs />} />
           <Route path="/bpmcreate/:trackId" element={<Bpmcreate/>} />
+          <Route path="/generateplaylist/:bpm/:energy" element={<GeneratePlaylist/>} />
           {/* Add more routes as needed */}
         </Routes>
       </BrowserRouter>
