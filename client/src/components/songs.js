@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Image } from 'react-bootstrap';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../contexts/authContext.js';
 
 const Songs = () => {
     const { playlistId } = useParams();
     const [playlistDetails, setPlaylistDetails] = useState(null);
     const [tracks, setTracks] = useState([]);
     const accessToken = localStorage.getItem('accessToken');
+    const { handleBPM } = useContext(AuthContext);
+
+
 
   useEffect(() => {
     const fetchAllTracks = async (url) => {
@@ -35,42 +40,54 @@ const Songs = () => {
         const tracksUrl = `${detailsUrl}/tracks?limit=100`;
         const allTracks = await fetchAllTracks(tracksUrl);
         setTracks(allTracks);
+        console.log(allTracks)
       } catch (error) {
         console.error('Error fetching playlist details:', error);
       }
     };
-
+    
     if (accessToken) {
       fetchPlaylistDetails();
     }
   }, [playlistId, accessToken]);
 
+
   return (
     <Container>
-      {playlistDetails && (
-        <>
-          <Row className="align-items-center" style={{ background: 'purple', padding: '20px', borderRadius: '6px' }}>
-            <Col md={4}>
-              <Image src={playlistDetails.images[0].url} thumbnail />
-            </Col>
-            <Col md={8}>
-              <h1>{playlistDetails.name}</h1>
-              <p>{playlistDetails.description}</p>
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <ListGroup>
-              {tracks.map((track, index) => (
-                <ListGroup.Item key={track.track.id + index}>
-                  {index + 1}. {track.track.name} by {track.track.artists.map(artist => artist.name).join(', ')}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Row>
-        </>
-      )}
+        {playlistDetails && (
+            <>
+                <Row className="align-items-center" style={{ background: 'purple', padding: '20px', borderRadius: '6px' }}>
+                    <Col md={4}>
+                        <Image src={playlistDetails.images[0].url} thumbnail />
+                    </Col>
+                    <Col md={8}>
+                        <h1>{playlistDetails.name}</h1>
+                        <p>{playlistDetails.description}</p>
+                    </Col>
+                </Row>
+                <Row className="mt-4">
+                    <ListGroup>
+                        {tracks.map((track, index) => (
+                            <ListGroup.Item 
+                                key={track.track.id + index}
+                                style={{
+                                    marginBottom: '10px', 
+                                    transition: 'transform 0.2s',
+                                    cursor: 'pointer'
+                                }}
+                                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+                                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                onClick={() => handleBPM(track.track.id, accessToken)} // Add the onClick event handler here
+                            >
+                                {index + 1}. {track.track.name} by {track.track.artists.map(artist => artist.name).join(', ')}
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                </Row>
+            </>
+        )}
     </Container>
-  );
+    );  
 };
 
 export default Songs;

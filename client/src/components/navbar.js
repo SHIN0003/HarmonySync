@@ -20,7 +20,11 @@ function CustomNavbar() {
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="/home">Spotify Playlist Generator</Navbar.Brand>
+                <Navbar.Brand>
+                    <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        Spotify Playlist Generator
+                    </Link>
+                </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
                         {isLoggedIn && user ? (

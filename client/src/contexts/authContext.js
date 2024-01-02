@@ -56,13 +56,27 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    async function handleBPM(trackId, accessToken) {
+        try {
+            const audioFeaturesUrl = `https://api.spotify.com/v1/audio-features/${trackId}`;
+            const response = await axios.get(audioFeaturesUrl, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            const tempo = response.data.tempo;
+            console.log(`Tempo (BPM) of the track: ${tempo}`);
+        } catch (error) {
+            console.error('Error fetching audio features:', error);
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             handleLogin,
             handleLogout,
             fetchTokens,
             fetchUser,
-            fetchPlaylists
+            fetchPlaylists,
+            handleBPM
         }}>
             {children}
         </AuthContext.Provider>
