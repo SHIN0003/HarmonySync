@@ -73,7 +73,8 @@ const Songs = () => {
                                 key={track.track.id + index} // Moved the key here
                                 style={{ textDecoration: 'none' }}
                             >
-                                <ListGroup.Item 
+                                <ListGroup.Item
+                                    
                                     style={{
                                         marginBottom: '10px', 
                                         transition: 'transform 0.2s',
@@ -81,7 +82,7 @@ const Songs = () => {
                                     }}
                                     onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                                     onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                >
+                                >   <Image src={track.track.album.images[2].url} thumbnail />
                                     {index + 1} {track.track.name} by {track.track.artists.map(artist => artist.name).join(', ')}
                                 </ListGroup.Item>
                             </Link>

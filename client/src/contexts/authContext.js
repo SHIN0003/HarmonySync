@@ -83,6 +83,32 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    async function fetchTrackGenre(trackId, accessToken) {
+        try {
+            // First, fetch the track information to get the artist's ID
+            const trackUrl = `https://api.spotify.com/v1/tracks/${trackId}`;
+            const trackResponse = await axios.get(trackUrl, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            const artistId = trackResponse.data.artists[0].id; // Assuming you want the first artist
+            
+            // Next, fetch the artist information using the artist's ID
+            const artistUrl = `https://api.spotify.com/v1/artists/${artistId}`;
+            const artistResponse = await axios.get(artistUrl, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+
+            const genres = artistResponse.data.genres; // This is an array of genres
+    
+            // Return the genres array, or however you'd like to handle it
+            return genres;
+        } catch (error) {
+            console.error('Error fetching genre:', error);
+            throw error; // Re-throw the error to handle it further up the call stack
+        }
+    }
+    
+
     return (
         <AuthContext.Provider value={{
             handleLogin,
@@ -91,7 +117,8 @@ export const AuthProvider = ({ children }) => {
             fetchUser,
             fetchPlaylists,
             handleBPM,
-            fetchEnergy
+            fetchEnergy,
+            fetchTrackGenre
         }}>
             {children}
         </AuthContext.Provider>

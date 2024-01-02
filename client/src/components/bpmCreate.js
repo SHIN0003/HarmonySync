@@ -7,10 +7,12 @@ import { Link } from 'react-router-dom';
 
 function BpmCreate() {
     const accessToken = localStorage.getItem('accessToken');
-    const { handleBPM, fetchEnergy } = useContext(AuthContext);
+    const { handleBPM, fetchEnergy, fetchTrackGenre } = useContext(AuthContext);
     const { trackId } = useParams();
     const [BPM, setBPM] = useState(null); // state to store the BPM value
     const [energy, setEnergy] = useState(null);
+    const [genres, setGenres] = useState([]);
+
     useEffect(() => {
         // Function to fetch BPM should be called inside useEffect
         const fetchBPM = async () => {
@@ -25,14 +27,26 @@ function BpmCreate() {
         getEnergy();
     }, [trackId, accessToken, handleBPM]); // Dependencies array
 
+    useEffect(() => {
+        const fetchGenre = async () => {
+            const genreValue = await fetchTrackGenre(trackId, accessToken);
+            setGenres(genreValue);
+        }
+        fetchGenre();
+    }, [trackId, accessToken, fetchTrackGenre]);
+
+    
     // If BPM is not null, display it, otherwise show a loading message
     return (
         <Container>
             <Row>
                 <Col>
-                    //pass these values to another component
-                    <Link to={`/generateplaylist/${BPM}/${energy}`} style={{ textDecoration: 'none' }}>
-                        <button>Generate Playlist</button>
+                    <Link
+                        
+                        to={`/generateplaylist/${BPM}/${energy}/${trackId}?genres=${encodeURIComponent(genres.join(','))}`}
+                        style={{ textDecoration: 'none' }}
+                        >
+                            <button>Generate Playlist</button>
                     </Link>
 
                 </Col>

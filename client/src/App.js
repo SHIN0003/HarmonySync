@@ -20,31 +20,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => {
-  const [home, setHome] = React.useState("");
 
-  const { 
-    handleLogin, 
-    handleLogout, 
-    fetchTokens 
-  } = useContext(AuthContext);
-    const [playlists, setPlaylists] = useState([]);
-
-
-
-  //home page data
-  useEffect(() => {
-    // Using Axios for GET request
-    async function getHome() {
-      try {
-        const response = await axios.get('http://localhost:3001/home');
-        setHome(response.data); // Axios automatically handles the response as JSON
-      } catch (error) {
-        console.error('Error fetching home data:', error);
-      }
-    }
-    getHome();
-  }, []);
- 
 
 
     return (
@@ -57,7 +33,7 @@ const App = () => {
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/songs/:playlistId" element={<Songs />} />
           <Route path="/bpmcreate/:trackId" element={<Bpmcreate/>} />
-          <Route path="/generateplaylist/:bpm/:energy" element={<GeneratePlaylist/>} />
+          <Route path="/generateplaylist/:bpm/:energy/:trackId" element={<GeneratePlaylist/>} />
           {/* Add more routes as needed */}
         </Routes>
       </BrowserRouter>

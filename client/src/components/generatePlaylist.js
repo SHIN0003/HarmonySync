@@ -3,12 +3,22 @@ import { Container, Row, Col, ListGroup, Image } from 'react-bootstrap';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios'; // Make sure you have axios installed
 import { AuthContext } from '../contexts/authContext.js';
+import { useLocation } from 'react-router-dom';
+
 
 function GeneratePlaylist() {
     const accessToken = localStorage.getItem('accessToken');
-    const { bpm, energy } = useParams();
+    const { bpm, energy, trackId} = useParams();
+    const query = useQuery();
+    const genresParam = query.get('genres');
+    const genresArray = genresParam ? genresParam.split(',') : [];
+    console.log(genresArray)
     const [tracks, setTracks] = useState([]);
 
+    function useQuery() {
+        return new URLSearchParams(useLocation().search);
+      }
+    const encodedGenres = genresArray.map(genre => encodeURIComponent(genre)).join('%2C');
     useEffect(() => {
         const fetchRecommendations = async () => {
             const endpoint = `https://api.spotify.com/v1/recommendations`;
@@ -18,13 +28,13 @@ function GeneratePlaylist() {
             const maxEnergy = parseFloat(energy) + 0.1;
             
             const params = new URLSearchParams({
-                limit: '10',
-                market: 'US',
-                seed_genres: 'pop',
-                min_tempo: minTempo.toString(),
-                max_tempo: maxTempo.toString(),
-                min_energy: minEnergy.toString(),
-                max_energy: maxEnergy.toString(),
+                limit: '50',
+                seed_genres: encodedGenres,
+                seed_tracks: trackId,
+                min_tempo: minTempo,
+                max_tempo: maxTempo,
+                min_energy: minEnergy,
+                max_energy: maxEnergy
             });
     
             const requestUrl = `${endpoint}?${params.toString()}`;
@@ -56,7 +66,7 @@ function GeneratePlaylist() {
                     <ListGroup>
                         {tracks.map((track, index) => (
                             <ListGroup.Item key={track.id}>
-                                <Image src={track.album.images[0].url} thumbnail />
+                                <Image src={track.album.images[2].url} thumbnail />
                                 <div>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</div>
                             </ListGroup.Item>
                         ))}
