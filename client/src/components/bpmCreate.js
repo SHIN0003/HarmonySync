@@ -38,16 +38,18 @@ function BpmCreate() {
     
     // If BPM is not null, display it, otherwise show a loading message
     return (
-        <Container>
+        <Container fluid style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Row>
                 <Col>
-                    <Link
-                        
-                        to={`/generateplaylist/${BPM}/${energy}/${trackId}?genres=${encodeURIComponent(genres.join(','))}`}
-                        style={{ textDecoration: 'none' }}
-                        >
-                            <button>Generate Playlist</button>
-                    </Link>
+                    
+                        <Link
+                            
+                            to={`/generateplaylist/${BPM}/${energy}/${trackId}?genres=${encodeURIComponent(genres.join(','))}`}
+                            className="btn btn-primary"
+                            style={{ textDecoration: 'none' }}
+                            >
+                                GeneratePlaylist
+                        </Link>
 
                 </Col>
             </Row>

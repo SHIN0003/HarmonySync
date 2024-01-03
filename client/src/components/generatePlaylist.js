@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import axios from 'axios'; // Make sure you have axios installed
 import { AuthContext } from '../contexts/authContext.js';
 import { useLocation } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 function GeneratePlaylist() {
     const accessToken = localStorage.getItem('accessToken');
@@ -44,8 +44,9 @@ function GeneratePlaylist() {
                 const response = await axios.get(requestUrl, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
-    
                 setTracks(response.data.tracks);
+                localStorage.setItem('tracks', JSON.stringify(response.data.tracks));
+
             } catch (error) {
                 console.error('Error fetching recommendations:', error.response || error.message);
             }
@@ -63,11 +64,17 @@ function GeneratePlaylist() {
             <Row>
                 <Col>
                     <h1>Recommended Tracks</h1>
+                    <Link 
+                    to={`/saveplaylist`} 
+                    className="btn btn-primary" 
+                    style={{ textDecoration: 'none', marginBottom: '20px' }} // Added margin-bottom here
+                >                        Add Playlist to Spotify
+                    </Link>
                     <ListGroup>
                         {tracks.map((track, index) => (
                             <ListGroup.Item key={track.id}>
                                 <Image src={track.album.images[2].url} thumbnail />
-                                <div>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</div>
+                                {index + 1} {track.name} by {track.artists.map(artist => artist.name).join(', ')}
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
