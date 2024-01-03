@@ -9,6 +9,8 @@ function SavePlaylist() {
     const { bpm, energy} = useParams();
     const [userId, setUserId] = useState(null);
     const accessToken = localStorage.getItem('accessToken');
+    const [successMessage, setSuccessMessage] = useState(''); // State to hold the success message
+    const [errorMessage, setErrorMessage] = useState('');
     const createPlaylist = async (userId, name, description) => {
         try {
             const response = await axios.post(
@@ -74,6 +76,8 @@ function SavePlaylist() {
                         // Add tracks to the newly created playlist
                         await addTracksToPlaylist(newPlaylistId, trackUris);
                         setPlaylistId(newPlaylistId); // Save the playlist ID if needed for later use
+                        setSuccessMessage(`Playlist created successfully! Playlist ID: ${newPlaylistId}`); // Set the success message
+                        setErrorMessage('');
                         console.log(`Playlist created with ID: ${newPlaylistId}`);
                     }
                 } else {
@@ -81,6 +85,8 @@ function SavePlaylist() {
                 }
             } catch (error) {
                 console.error('Error during playlist creation:', error);
+                setErrorMessage('Error creating playlist'); // Set the error message
+                setSuccessMessage('');
             }
         } else {
             console.log('No tracks to add to playlist');
@@ -92,6 +98,8 @@ function SavePlaylist() {
         <div>
             <h1>Save Playlist</h1>
             <button onClick={handleSavePlaylist}>Create Playlist</button>
+            {successMessage && <div className="alert alert-success">{successMessage}</div>}
+            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>} {/* Conditional rendering of error message */}
         </div>
     );
 }
