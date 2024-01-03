@@ -55,7 +55,7 @@ app.get('/home', async (req, res) => {
 
 // Redirect users to this endpoint for Spotify login, then redirect them to the /callback endpoint
 app.get('/login', (req, res) => {
-  const scopes = ['user-read-private', 'user-read-email', 'playlist-read-private'];
+  const scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'playlist-modify-public'];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
   
 }); 

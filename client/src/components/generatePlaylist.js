@@ -65,7 +65,7 @@ function GeneratePlaylist() {
                 <Col>
                     <h1>Recommended Tracks</h1>
                     <Link 
-                    to={`/saveplaylist`} 
+                    to={`/saveplaylist/${bpm}/${energy}`} 
                     className="btn btn-primary" 
                     style={{ textDecoration: 'none', marginBottom: '20px' }} // Added margin-bottom here
                 >                        Add Playlist to Spotify

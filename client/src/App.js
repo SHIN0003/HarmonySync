@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/songs/:playlistId" element={<Songs />} />
           <Route path="/bpmcreate/:trackId" element={<Bpmcreate/>} />
           <Route path="/generateplaylist/:bpm/:energy/:trackId" element={<GeneratePlaylist/>} />
-          <Route path="/saveplaylist" element={<SavePlaylist/>} />
+          <Route path="/saveplaylist/:bpm/:energy" element={<SavePlaylist/>} />
           {/* Add more routes as needed */}
         </Routes>
       </BrowserRouter>
