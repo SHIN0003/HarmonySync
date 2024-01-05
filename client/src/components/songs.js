@@ -78,7 +78,8 @@ const Songs = () => {
                                     style={{
                                         marginBottom: '10px', 
                                         transition: 'transform 0.2s',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        backgroundColor: 'Grey',
                                     }}
                                     onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                                     onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}

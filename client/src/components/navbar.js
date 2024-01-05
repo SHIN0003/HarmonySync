@@ -3,6 +3,8 @@ import axios from 'axios';
 import { AuthContext } from '../contexts/authContext.js';
 import { Navbar, Container } from "react-bootstrap";
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png'; // Adjust the path if navbar.js is not in src
+
 
 function CustomNavbar() {
     const { handleLogin, handleLogout,fetchUser } = useContext(AuthContext);
@@ -18,11 +20,16 @@ function CustomNavbar() {
     }, [accessToken]);
 
     return (
-        <Navbar bg="dark" variant="dark">
+        <Navbar style={{ backgroundColor: '#301934' }} variant="dark" sticky="top">
             <Container>
                 <Navbar.Brand>
-                    <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        Spotify Playlist Generator
+                    <img 
+                        src= {logo} // Replace with your logo path
+                        alt="Logo"
+                        style={{ marginRight: '20px', width: '75px', height: 'auto' }}
+                    />
+                    <Link to="/home" style={{textDecoration: 'none', color: 'inherit' }}>
+                        HarmonySync
                     </Link>
                 </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">

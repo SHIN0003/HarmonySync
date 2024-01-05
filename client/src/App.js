@@ -1,13 +1,5 @@
-import './App.css';
-import './index.css';
-import React, { useState, useEffect, useContext } from 'react';
-import {AuthContext } from './contexts/authContext';
-import axios from 'axios';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-
-import {BrowserRouter, createBrowserRouter, RouterProvider, Route, Routes} from "react-router-dom";
-
+import React from 'react';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./components/home.js";
 import CustomNavbar from "./components/navbar.js";
 import AuthCallback from "./components/authCallback.js";
@@ -16,14 +8,11 @@ import Songs from "./components/songs.js";
 import Bpmcreate from "./components/bpmCreate.js";
 import GeneratePlaylist from "./components/generatePlaylist.js";
 import SavePlaylist from './components/savePlaylist.js';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import './App.css';
+import './index.css';
 
 const App = () => {
-
-
-
     return (
       <BrowserRouter>
         <CustomNavbar/>
