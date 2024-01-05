@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3000', // adjust if your frontend port is different
+  origin: 'https://harmonysyncserver.onrender.com', // adjust if your frontend port is different
   credentials: true
 }));
 const session = require('express-session');
@@ -102,7 +102,8 @@ app.get('/callback', (req, res) => {
       } else {        
         console.log("saved")
         // In your Express route after successful authentication
-        res.redirect('http://localhost:3000/auth/callback');
+        const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+        res.redirect(`${baseUrl}/auth/callback`);
       }
     });
   }).catch(error => {
@@ -117,5 +118,5 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
+  console.log(`${port}`);
 });

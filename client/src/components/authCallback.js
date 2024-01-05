@@ -3,6 +3,7 @@ import { AuthContext } from '../contexts/authContext';
 
 const AuthCallback = () => {
     const { fetchTokens } = useContext(AuthContext);
+    baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 
     useEffect(() => {
         const fetchAndSetTokens = async () => {
@@ -11,7 +12,7 @@ const AuthCallback = () => {
                 localStorage.setItem('accessToken', tokens);
                 localStorage.setItem('isLoggedIn', true);
                 // Redirect to home or other page after successful login
-                window.location.href = 'http://localhost:3000/home';
+                window.location.href = `${baseUrl}/home`;
             }
         };
         fetchAndSetTokens();

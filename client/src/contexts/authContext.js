@@ -3,16 +3,18 @@ import axios from 'axios';
 
 export const AuthContext = createContext(null);
 
+
 export const AuthProvider = ({ children }) => {
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3001';
     function handleLogin() {
-        window.location.href = 'http://localhost:3001/login';
+        window.location.href = `${baseUrl}/login`;
     }
 
     async function handleLogout() {
         try {
-            await axios.post('http://localhost:3001/logout');
+            await axios.post(`${baseUrl}/logout`);
             localStorage.clear();
-            window.location.href = 'http://localhost:3000';
+            window.location.href =  `${baseUrl}/`;
         } catch (error) {
             console.error('Error logging out:', error);
         }
@@ -20,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
     async function fetchTokens() {
         try {
-            const response = await axios.get('http://localhost:3001/api/token', { withCredentials: true });
+            const response = await axios.get(`${baseUrl}/api/token`, { withCredentials: true });
             if (response.data.accessToken) {
                 localStorage.setItem('accessToken', response.data.accessToken);
                 return response.data.accessToken;
