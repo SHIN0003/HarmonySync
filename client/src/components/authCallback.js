@@ -3,7 +3,7 @@ import { AuthContext } from '../contexts/authContext';
 
 const AuthCallback = () => {
     const { fetchTokens } = useContext(AuthContext);
-    baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 
     useEffect(() => {
         const fetchAndSetTokens = async () => {
