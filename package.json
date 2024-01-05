@@ -1,0 +1,16 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "description": "Introduction HarmonySync is a web application designed to enhance your workout experience by providing you with a custom playlist that matches the BPM (beats per minute) of your chosen song. This ensures that you can maintain your workout intensity in sync with the rhythm of the music.",
+  "main": "index.js",
+  "scripts": {
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:client && npm run install:server",
+    "start": "cd server && npm start"
+  },
+  "author": "Andrew Tai",
+  "license": "ISC"
+}
+
