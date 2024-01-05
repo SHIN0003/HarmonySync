@@ -7,7 +7,7 @@
     "install:client": "cd client && npm install",
     "install:server": "cd server && npm install",
     "build:client": "cd client && npm run build",
-    "build": "npm run build:client && npm run install:server",
+    "build": "npm run build:client && npm install:server",
     "start": "cd server && npm start"
   },
   "author": "Andrew Tai",
