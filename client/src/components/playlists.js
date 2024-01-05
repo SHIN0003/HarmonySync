@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import { AuthContext } from '/Users/andrewtai/Desktop/codingfiles/Express/client/src/contexts/authContext.js';
+import { AuthContext } from '../contexts/authContext.js';
 import { Link } from 'react-router-dom';
 
 const Playlists = () => {
