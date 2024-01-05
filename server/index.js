@@ -102,7 +102,7 @@ app.get('/callback', (req, res) => {
       } else {        
         console.log("saved")
         // In your Express route after successful authentication
-        const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+        const baseUrl = process.env.BASE_URL;
         res.redirect(`${baseUrl}/auth/callback`);
       }
     });
@@ -116,7 +116,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`${port}`);
 });

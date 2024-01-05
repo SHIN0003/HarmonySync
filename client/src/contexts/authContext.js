@@ -5,8 +5,8 @@ export const AuthContext = createContext(null);
 
 
 export const AuthProvider = ({ children }) => {
-    const baseUrl = process.env.BASE_URL || 'http://localhost:3001';
-    
+    const baseUrl = process.env.BASE_URL;
+
     function handleLogin() {
         window.location.href = `${baseUrl}/login`;
     }
