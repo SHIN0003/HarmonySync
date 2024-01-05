@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         try {
             await axios.post(`${baseUrl}/logout`);
             localStorage.clear();
-            window.location.href =  `${baseUrl}/`;
+            window.location.href =  `${baseUrl}`;
         } catch (error) {
             console.error('Error logging out:', error);
         }
