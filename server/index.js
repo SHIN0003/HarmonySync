@@ -48,10 +48,6 @@ app.get('/api/token', (req, res) => {
   }
 });
 
-app.get('/home', async (req, res) => {
-  res.send("This is data for home page");
-  //res.send(arr);
-});
 
 // Redirect users to this endpoint for Spotify login, then redirect them to the /callback endpoint
 app.get('/login', (req, res) => {
