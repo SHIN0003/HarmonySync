@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 
 app.use(cors({
-  origin: `${process.env.FRONT_URL}`, // adjust if your frontend port is different
+  origin: process.env.FRONT_URL, // adjust if your frontend port is different
   credentials: true
 }));
 
@@ -126,6 +126,7 @@ app.get('/callback', (req, res) => {
         res.send(`Error saving session: ${err}`);
       } else {        
         console.log("saved")
+        console.log(req.session.user)
         // In your Express route after successful authentication
         res.redirect(`${process.env.FRONT_URL}/auth/callback`);
       }
