@@ -27,8 +27,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false, // You can set this to false to comply with laws that require permission before setting a cookie
   cookie: {
-    secure: false, // Set secure to true in production (if using HTTPS)
-    httpOnly: true // Helps against XSS attacks
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // Should be true if using HTTPS
   }
   // Add other configurations as needed
 }));
