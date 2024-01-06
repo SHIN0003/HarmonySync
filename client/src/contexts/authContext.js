@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
 
     async function fetchTokens() {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_BACK}/api/token`, 
-            { withCredentials: true } || "localhost:3001/api/token", { withCredentials: true });
+            const url = process.env.REACT_APP_BACK ? `${process.env.REACT_APP_BACK}/api/token` : "http://localhost:3001/api/token";
+            const response = await axios.get(url, { withCredentials: true });
             if (response.data.accessToken) {
                 localStorage.setItem('accessToken', response.data.accessToken);
                 return response.data.accessToken;
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
             console.error('Error fetching tokens:', error);
         }
     }
-
+    
     async function fetchUser(accessToken) {
         if (accessToken) {
             try {
