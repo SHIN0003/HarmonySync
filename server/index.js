@@ -129,7 +129,9 @@ app.get('/callback', (req, res) => {
         console.log("saved")
         console.log(req.session.user)
         // In your Express route after successful authentication
-        res.redirect(`${process.env.FRONT_URL}/auth/callback`);
+        setTimeout(() => {
+          res.redirect(`${process.env.FRONT_URL}/auth/callback`);
+        }, 1000);
       }
     });
   }).catch(error => {
