@@ -4,19 +4,49 @@ require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
 const app = express();
+
 app.use(cors({
   origin: `${process.env.FRONT_URL}`, // adjust if your frontend port is different
   credentials: true
 }));
-const session = require('express-session');
-// Serve static files from the React app
-//app.use(express.static(path.join(__dirname, '../../client/build')));
 
+// Redis setup
+const { createClient } = require('redis');
+const redisClient = createClient({
+  url: 'rediss://red-cmcp61f109ks73921rng:WbyyCCp36c1oIHIO5irK8nwAN0nlyU5P@ohio-redis.render.com:6379',
+  legacyMode: true// Your Redis URL
+});
+redisClient.connect().catch(console.error);
+
+// Session setup with Redis
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
 app.use(session({
+  store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // You can set this to false to comply with laws that require permission before setting a cookie
+  cookie: {
+    secure: false, // Set secure to true in production (if using HTTPS)
+    httpOnly: true // Helps against XSS attacks
+  }
+  // Add other configurations as needed
 }));
+
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {
+//     httpOnly: true
+//   }
+// }));
+
+redisClient.on('connect', () => console.log('Redis client connected'));
+redisClient.on('error', (err) => console.log('Redis Client Error', err));
+
+// Serve static files from the React app
+//app.use(express.static(path.join(__dirname, '../../client/build')));
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,

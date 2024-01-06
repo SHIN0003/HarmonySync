@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     async function handleLogout() {
         try {
-            await axios.post(`${process.env.REACT_APP_BACK}/logout` || "localhost:3001/logout");
+            await axios.post(`${process.env.REACT_APP_BACK}/logout`, { withCredentials: true } || "localhost:3001/logout");
             localStorage.clear();
             window.location.href = `${process.env.REACT_APP_FRONT}`;
         } catch (error) {
