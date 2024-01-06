@@ -10,7 +10,7 @@ app.use(cors({
 }));
 const session = require('express-session');
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../../client/build')));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
