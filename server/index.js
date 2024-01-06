@@ -10,7 +10,7 @@ app.use(cors({
 }));
 const session = require('express-session');
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../../client/build')));
+//app.use(express.static(path.join(__dirname, '../../client/build')));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -106,9 +106,9 @@ app.get('/callback', (req, res) => {
   });
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+// });
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
