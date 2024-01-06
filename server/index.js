@@ -38,7 +38,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    httpOnly: true
+    httpOnly: true,
+    sameSite: 'lax'
   }
 }));
 
