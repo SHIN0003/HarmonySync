@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3000', // adjust if your frontend port is different
+  origin: `${process.env.FRONT_URL}`, // adjust if your frontend port is different
   credentials: true
 }));
 const session = require('express-session');
@@ -46,11 +46,6 @@ app.get('/api/token', (req, res) => {
   } else {
     res.status(401).json({ error: 'Unauthorized: No active session' });
   }
-});
-
-app.get('/home', async (req, res) => {
-  res.send("This is data for home page");
-  //res.send(arr);
 });
 
 // Redirect users to this endpoint for Spotify login, then redirect them to the /callback endpoint

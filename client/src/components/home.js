@@ -12,10 +12,6 @@ function Home() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const accessToken = localStorage.getItem('accessToken');
 
-  // const handleViewPlaylists = () => {
-  //   window.location.href = 'http://localhost:3000/playlists';
-  // };
-
   return (
     <div className="App">
       <header className="App-header">

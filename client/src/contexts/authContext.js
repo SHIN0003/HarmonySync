@@ -4,15 +4,16 @@ import axios from 'axios';
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+
     function handleLogin() {
-        window.location.href = 'http://localhost:3001/login';
+        window.location.href = `${process.env.REACT_APP_BACK}/login` || "localhost:3001/login";
     }
 
     async function handleLogout() {
         try {
-            await axios.post('http://localhost:3001/logout');
+            await axios.post(`${process.env.REACT_APP_BACK}/logout` || "localhost:3001/logout");
             localStorage.clear();
-            window.location.href = 'http://localhost:3000';
+            window.location.href = `${process.env.REACT_APP_FRONT}`;
         } catch (error) {
             console.error('Error logging out:', error);
         }
@@ -20,7 +21,8 @@ export const AuthProvider = ({ children }) => {
 
     async function fetchTokens() {
         try {
-            const response = await axios.get('http://localhost:3001/api/token', { withCredentials: true });
+            const response = await axios.get(`${process.env.REACT_APP_BACK}/api/token`, 
+            { withCredentials: true } || "localhost:3001/api/token", { withCredentials: true });
             if (response.data.accessToken) {
                 localStorage.setItem('accessToken', response.data.accessToken);
                 return response.data.accessToken;
