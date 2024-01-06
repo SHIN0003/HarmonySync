@@ -2,11 +2,10 @@ import React, { createContext } from 'react';
 import axios from 'axios';
 
 export const AuthContext = createContext(null);
-
+const baseUrl = process.env.BASE_URL;
 
 export const AuthProvider = ({ children }) => {
-    const baseUrl = process.env.BASE_URL;
-
+    
     function handleLogin() {
         window.location.href = `${baseUrl}/login`;
     }

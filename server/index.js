@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 app.use(cors({
-  origin: 'https://harmonysyncserver.onrender.com/3001', // adjust if your frontend port is different
+  origin: `${process.env.BASE_URL}`, // adjust if your frontend port is different
   credentials: true
 }));
 const session = require('express-session');
