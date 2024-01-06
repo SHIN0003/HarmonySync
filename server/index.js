@@ -4,6 +4,19 @@ require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
 const app = express();
+const session = require('express-session');
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: 'none',
+    domain: '.onrender.com'
+  }
+}));
 
 app.use(cors({
   origin: process.env.FRONT_URL, // adjust if your frontend port is different
@@ -19,7 +32,7 @@ app.use(cors({
 // redisClient.connect().catch(console.error);
 // const RedisStore = require('connect-redis')(session);
 // Session setup with Redis
-const session = require('express-session');
+
 
 // app.use(session({
 //   store: new RedisStore({ client: redisClient }),
@@ -32,17 +45,6 @@ const session = require('express-session');
 //   }
 //   // Add other configurations as needed
 // }));
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: 'lax'
-  }
-}));
 
 // redisClient.on('connect', () => console.log('Redis client connected'));
 // redisClient.on('error', (err) => console.log('Redis Client Error', err));
