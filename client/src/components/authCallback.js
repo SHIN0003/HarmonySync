@@ -11,7 +11,7 @@ const AuthCallback = () => {
                 localStorage.setItem('accessToken', tokens);
                 localStorage.setItem('isLoggedIn', true);
                 // Redirect to home or other page after successful login
-                window.location.href = `https://harmonysyncserver.onrender.com/home`;
+                window.location.href = `${process.env.REACT_APP_URL}/home`;
             }
         };
         fetchAndSetTokens();

@@ -5,13 +5,18 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 app.use(cors({
-  origin: "https://harmonysyncserver.onrender.com", // adjust if your frontend port is different
+  origin: process.env.FRONTEND_URL, // adjust if your frontend port is different
   credentials: true
 }));
-
+const session = require('express-session');
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+}));
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -93,7 +98,7 @@ app.get('/callback', (req, res) => {
       } else {        
         console.log("saved")
         // In your Express route after successful authentication
-        res.redirect(`https://harmonysyncserver.onrender.com/auth/callback`);
+        res.redirect(`${process.env.BACKEND_URL}/callback`);
       }
     });
   }).catch(error => {

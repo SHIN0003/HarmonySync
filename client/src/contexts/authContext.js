@@ -7,14 +7,15 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
 
     function handleLogin() {
-        window.location.href = `https://harmonysyncserver.onrender.com/login`;
+        console.log(process.env.REACT_APP_URL)
+        window.location.href = `${process.env.REACT_APP_URL}/login`;
     }
 
     async function handleLogout() {
         try {
-            await axios.post(`https://harmonysyncserver.onrender.com/logout`);
+            await axios.post(`${process.env.REACT_APP_URL}/logout`);
             localStorage.clear();
-            window.location.href =  `https://harmonysyncserver.onrender.com`;
+            window.location.href =  `${process.env.REACT_APP_URL}`;
         } catch (error) {
             console.error('Error logging out:', error);
         }
@@ -22,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
     async function fetchTokens() {
         try {
-            const response = await axios.get(`https://harmonysyncserver.onrender.com/api/token`, { withCredentials: true });
+            const response = await axios.get(`${process.env.REACT_APP_URL}/api/token`, { withCredentials: true });
             if (response.data.accessToken) {
                 localStorage.setItem('accessToken', response.data.accessToken);
                 return response.data.accessToken;
