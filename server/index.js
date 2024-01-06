@@ -112,8 +112,7 @@ app.get('/callback', (req, res) => {
     const refreshToken = data.body['refresh_token'];
     const expiresIn = data.body['expires_in'];
     const expiryTime = new Date().getTime() + expiresIn * 1000;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('isLoggedIn', true);
+    
     req.session.user = {
       accessToken: accessToken,
       refreshToken: refreshToken,
@@ -129,8 +128,7 @@ app.get('/callback', (req, res) => {
         console.log("saved")
         console.log(req.session.user)
         // In your Express route after successful authentication
-        //res.redirect(`${process.env.FRONT_URL}/auth/callback`);
-        res.redirect(`${process.env.FRONT_URL}/home`);
+        res.redirect(`${process.env.FRONT_URL}/auth/callback`);
       }
     });
   }).catch(error => {
