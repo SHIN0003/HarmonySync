@@ -102,8 +102,7 @@ app.get('/callback', (req, res) => {
       } else {        
         console.log("saved")
         // In your Express route after successful authentication
-        const baseUrl = process.env.BASE_URL;
-        res.redirect(`${baseUrl}/auth/callback`);
+        res.redirect(`https://harmonysyncserver.onrender.com/auth/callback`);
       }
     });
   }).catch(error => {
