@@ -40,17 +40,14 @@ function BpmCreate() {
     return (
         <Container fluid style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Row>
-                <Col>
-                    
+                <Col>     
                         <Link
-                            
                             to={`/generateplaylist/${BPM}/${energy}/${trackId}?genres=${encodeURIComponent(genres.join(','))}`}
                             className="btn btn-primary"
                             style={{ textDecoration: 'none' }}
                             >
                                 GeneratePlaylist
                         </Link>
-
                 </Col>
             </Row>
         </Container>

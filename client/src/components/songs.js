@@ -58,7 +58,7 @@ const Songs = () => {
             <>
                 <Row className="align-items-center" style={{ background: 'purple', padding: '20px', borderRadius: '6px' }}>
                     <Col md={4}>
-                        <Image src={playlistDetails.images[0].url} thumbnail />
+                        <Image src={playlistDetails.images[0].url ?? 'client/src/assets/dog.png'} thumbnail />
                     </Col>
                     <Col md={8}>
                         <h1>{playlistDetails.name}</h1>
@@ -83,7 +83,7 @@ const Songs = () => {
                                     }}
                                     onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                                     onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                >   <Image src={track.track.album.images[2].url} thumbnail />
+                                >   <Image src={track.track.album.images[2].url ?? 'client/src/assets/dog.png'} thumbnail />
                                     {index + 1} {track.track.name} by {track.track.artists.map(artist => artist.name).join(', ')}
                                 </ListGroup.Item>
                             </Link>

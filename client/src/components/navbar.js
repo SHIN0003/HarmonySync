@@ -36,7 +36,7 @@ function CustomNavbar() {
                     <Navbar.Text>
                         {isLoggedIn && user ? (
                             <div className="user-info">
-                                <img src={user.images[0]?.url} alt="User" className="user-image" />
+                                <img src={user.images[0]?.url ?? 'client/src/assets/dog.png'} alt="User" className="user-image" />
                                 <p className="user-name">{user.display_name}</p>
                                 <button onClick={handleLogout}>Logout</button>
                             </div>

@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, ListGroup, Image } from 'react-bootstrap';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios'; // Make sure you have axios installed
-import { AuthContext } from '../contexts/authContext.js';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +11,6 @@ function GeneratePlaylist() {
     const query = useQuery();
     const genresParam = query.get('genres');
     const genresArray = genresParam ? genresParam.split(',') : [];
-    console.log(genresArray)
     const [tracks, setTracks] = useState([]);
 
     function useQuery() {
@@ -73,7 +71,7 @@ function GeneratePlaylist() {
                     <ListGroup>
                         {tracks.map((track, index) => (
                             <ListGroup.Item key={track.id}>
-                                <Image src={track.album.images[2].url} thumbnail />
+                                <Image src={track.album?.images[2]?.url ?? 'client/src/assets/dog.png'} thumbnail />
                                 {index + 1} {track.name} by {track.artists.map(artist => artist.name).join(', ')}
                             </ListGroup.Item>
                         ))}

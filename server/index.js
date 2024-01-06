@@ -8,15 +8,10 @@ app.use(cors({
   origin: "https://harmonysyncserver.onrender.com", // adjust if your frontend port is different
   credentials: true
 }));
-const session = require('express-session');
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-}));
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
