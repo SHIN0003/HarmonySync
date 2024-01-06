@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const url = process.env.REACT_APP_BACK ? `${process.env.REACT_APP_BACK}/api/token` : "http://localhost:3001/api/token";
             const response = await axios.get(url, { withCredentials: true });
+            console.log('Cookies received in frontend:', document.cookie);
             if (response.data.accessToken) {
                 localStorage.setItem('accessToken', response.data.accessToken);
                 return response.data.accessToken;

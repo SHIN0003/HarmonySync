@@ -39,6 +39,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: 'lax'
   }
 }));
@@ -71,6 +72,8 @@ app.post('/refresh', (req, res) => {
 } );
 
 app.get('/api/token', (req, res) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Cookies sent:', req.cookies);
   if (req.session.user && req.session.user.accessToken) {
     console.log("sending token")
     res.json({ accessToken: req.session.user.accessToken });
@@ -113,7 +116,9 @@ app.get('/callback', (req, res) => {
     const refreshToken = data.body['refresh_token'];
     const expiresIn = data.body['expires_in'];
     const expiryTime = new Date().getTime() + expiresIn * 1000;
-    
+    console.log('Session ID:', req.sessionID);
+    console.log('Cookies received:', req.cookies);
+
     req.session.user = {
       accessToken: accessToken,
       refreshToken: refreshToken,
@@ -130,6 +135,7 @@ app.get('/callback', (req, res) => {
         console.log(req.session.user)
         // In your Express route after successful authentication
         setTimeout(() => {
+          console.log('Redirecting to front URL');
           res.redirect(`${process.env.FRONT_URL}/auth/callback`);
         }, 1000);
       }
