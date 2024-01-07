@@ -25,7 +25,7 @@ app.use(cors({
 // Redis setup
 const { createClient } = require('redis');
 const redisClient = createClient({
-  url: 'rediss://red-cmcp61f109ks73921rng:WbyyCCp36c1oIHIO5irK8nwAN0nlyU5P@ohio-redis.render.com:6379',
+  url: 'redis://red-cmcp61f109ks73921rng:6379',
   legacyMode: true// Your Redis URL
 });
 redisClient.connect().catch(console.error);

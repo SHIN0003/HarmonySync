@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     async function fetchTokens() {
         try {
             const url = process.env.REACT_APP_BACK ? `${process.env.REACT_APP_BACK}/api/token` : "http://localhost:3001/api/token";
-            console.log("fetching tokens reached" + url)
+            console.log("fetching tokens reached " + url)
             const response = await axios.get(url, { withCredentials: true });
             console.log("response: " + response)
             console.log('Cookies received in frontend:', document.cookie);
