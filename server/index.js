@@ -34,16 +34,19 @@ redisClient.connect().catch(console.error);
 const RedisStore = require('connect-redis')(session);
 // Session setup with Redis
 
+app.set("trust proxy", 1);
 
 app.use(session({
   store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false, // You can set this to false to comply with laws that require permission before setting a cookie
+  name: 'HaromonyCookie',
   cookie: {
     httpOnly: true,
+    sameSite: 'none',
     secure: process.env.NODE_ENV === "production",
-    domain: 'onrender.com' // Should be true if using HTTPS
+    domain: process.env.DOMAIN // Should be true if using HTTPS
   }
   // Add other configurations as needed
 }));
