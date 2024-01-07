@@ -47,17 +47,6 @@ app.use(cors({
 //   // Add other configurations as needed
 // }));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: 'lax'
-  }
-}));
-
 // redisClient.on('connect', () => console.log('Redis client connected'));
 // redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
