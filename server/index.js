@@ -3,8 +3,9 @@ const SpotifyWebApi = require('spotify-web-api-node');
 require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const app = express();
-
+app.use(cookieParser());
 app.use(cors({
   origin: process.env.FRONT_URL, // adjust if your frontend port is different
   credentials: true
@@ -40,7 +41,8 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: 'lax'
+    sameSite: 'lax',
+    domain: '.onrender.com'
   }
 }));
 
