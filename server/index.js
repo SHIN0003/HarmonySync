@@ -3,10 +3,8 @@ const SpotifyWebApi = require('spotify-web-api-node');
 require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const app = express();
 const session = require('express-session');
-app.use(cookieParser());
 // app.use(session({
 //   secret: process.env.SESSION_SECRET,
 //   resave: false,
@@ -34,7 +32,6 @@ redisClient.connect().catch(console.error);
 const RedisStore = require('connect-redis')(session);
 // Session setup with Redis
 
-app.set("trust proxy", 1);
 
 app.use(session({
   store: new RedisStore({ client: redisClient }),
@@ -79,6 +76,7 @@ app.post('/refresh', (req, res) => {
 } );
 
 app.get('/api/token', (req, res) => {
+  console.log("token endpoint hit")
   console.log('Session ID:', req.sessionID);
   console.log('Cookies sent:', req.cookies);
   if (req.session.user && req.session.user.accessToken) {
@@ -91,6 +89,10 @@ app.get('/api/token', (req, res) => {
 
 // Redirect users to this endpoint for Spotify login, then redirect them to the /callback endpoint
 app.get('/login', (req, res) => {
+  console.log("STEP 1")
+  console.log("--------------------")
+  console.log("login enpoint hit")
+  console.log("--------------------")
   const scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'playlist-modify-public'];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
   
@@ -109,6 +111,10 @@ app.post('/logout', (req, res) => {
 
 // Spotify will redirect users to this endpoint after login
 app.get('/callback', (req, res) => {
+  console.log("STEP 2")
+  console.log("--------------------")
+  console.log("callback endpoint hit")
+  console.log("--------------------")
   const error = req.query.error;
   const code = req.query.code;
 
@@ -139,7 +145,7 @@ app.get('/callback', (req, res) => {
         res.send(`Error saving session: ${err}`);
       } else {        
         console.log("saved")
-        console.log(req.session.user)
+        console.log(req.session)
         // In your Express route after successful authentication
         setTimeout(() => {
           console.log('Redirecting to front URL');

@@ -5,6 +5,7 @@ const AuthCallback = () => {
     const { fetchTokens } = useContext(AuthContext);
     useEffect(() => {
         const fetchAndSetTokens = async () => {
+            console.log("AuthCallback reached and fetching tokens...")
             const tokens = await fetchTokens();
             if (tokens) {
                 localStorage.setItem('accessToken', tokens);
