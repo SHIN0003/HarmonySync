@@ -7,17 +7,17 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const session = require('express-session');
 app.use(cookieParser());
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: 'none',
-    domain: '.onrender.com'
-  }
-}));
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {
+
+//     secure: process.env.NODE_ENV === "production",
+//     sameSite: 'lax',
+//     //domain: '.onrender.com'
+//   }
+// }));
 
 app.use(cors({
   origin: process.env.FRONT_URL, // adjust if your frontend port is different
@@ -25,30 +25,31 @@ app.use(cors({
 }));
 
 // Redis setup
-// const { createClient } = require('redis');
-// const redisClient = createClient({
-//   url: 'rediss://red-cmcp61f109ks73921rng:WbyyCCp36c1oIHIO5irK8nwAN0nlyU5P@ohio-redis.render.com:6379',
-//   legacyMode: true// Your Redis URL
-// });
-// redisClient.connect().catch(console.error);
-// const RedisStore = require('connect-redis')(session);
+const { createClient } = require('redis');
+const redisClient = createClient({
+  url: 'rediss://red-cmcp61f109ks73921rng:WbyyCCp36c1oIHIO5irK8nwAN0nlyU5P@ohio-redis.render.com:6379',
+  legacyMode: true// Your Redis URL
+});
+redisClient.connect().catch(console.error);
+const RedisStore = require('connect-redis')(session);
 // Session setup with Redis
 
 
-// app.use(session({
-//   store: new RedisStore({ client: redisClient }),
-//   secret: process.env.SESSION_SECRET,
-//   resave: false,
-//   saveUninitialized: false, // You can set this to false to comply with laws that require permission before setting a cookie
-//   cookie: {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production", // Should be true if using HTTPS
-//   }
-//   // Add other configurations as needed
-// }));
+app.use(session({
+  store: new RedisStore({ client: redisClient }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false, // You can set this to false to comply with laws that require permission before setting a cookie
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    domain: 'onrender.com' // Should be true if using HTTPS
+  }
+  // Add other configurations as needed
+}));
 
-// redisClient.on('connect', () => console.log('Redis client connected'));
-// redisClient.on('error', (err) => console.log('Redis Client Error', err));
+redisClient.on('connect', () => console.log('Redis client connected'));
+redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
 // Serve static files from the React app
 //app.use(express.static(path.join(__dirname, '../../client/build')));
