@@ -25,7 +25,7 @@ app.use(cors({
 // Redis setup
 const { createClient } = require('redis');
 const redisClient = createClient({
-  url: 'redis://red-cmcp61f109ks73921rng:6379',
+  url: 'rediss://red-cmcp61f109ks73921rng:WbyyCCp36c1oIHIO5irK8nwAN0nlyU5P@ohio-redis.render.com:6379',
   legacyMode: true// Your Redis URL
 });
 redisClient.connect().catch(console.error);
@@ -41,7 +41,7 @@ app.use(session({
   name: 'HaromonyCookie',
   cookie: {
     httpOnly: true,
-    sameSite: 'none',
+    sameSite: process.env.NODE_ENV === "production" ? 'None' : 'Lax',
     secure: process.env.NODE_ENV === "production",
     domain: process.env.DOMAIN // Should be true if using HTTPS
   }
@@ -115,6 +115,9 @@ app.get('/callback', (req, res) => {
   console.log("--------------------")
   console.log("callback endpoint hit")
   console.log("--------------------")
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+  res.set('Pragma', 'no-cache'); // HTTP 1.0.
+  res.set('Expires', '0'); 
   const error = req.query.error;
   const code = req.query.code;
 
