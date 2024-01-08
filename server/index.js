@@ -43,7 +43,7 @@ app.use(session({
     httpOnly: true,
     sameSite: process.env.NODE_ENV === "production" ? 'None' : 'Lax',
     secure: process.env.NODE_ENV === "production",
-    domain: process.env.DOMAIN // Should be true if using HTTPS
+    //domain: process.env.DOMAIN // Should be true if using HTTPS
   }
   // Add other configurations as needed
 }));
