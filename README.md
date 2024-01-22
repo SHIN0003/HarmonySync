@@ -19,56 +19,56 @@ Additionally, you'll need to create a Spotify Developer account and access your 
 
 1. **Clone the Repository**
 
-   \`\`\`bash
+   ```bash
    git clone https://github.com/SHIN0003/HarmonySync
    cd HarmonySync
-   \`\`\`
+   ```
 
 2. **Server Setup**
 
    - Navigate to the server directory and create a `.env` file with the following structure:
 
-     \`\`\`plaintext
+     ```plaintext
      SPOTIFY_CLIENT_ID=your_spotify_client_id
      SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
      SPOTIFY_REDIRECT_URI=http://localhost:3001/callback
      SESSION_SECRET=your_session_secret
      FRONT_URL=http://localhost:3000
-     \`\`\`
+     ```
 
    - Install server dependencies:
 
-     \`\`\`bash
+     ```bash
      cd server
      npm install
-     \`\`\`
+     ```
 
    - Start the server:
 
-     \`\`\`bash
+    ```bash
      npm start
-     \`\`\`
+    ```
 
 3. **Client Setup**
 
    - Inside the client directory, create a `.env` file with the following content:
 
-     \`\`\`plaintext
+    ```plaintext
      REACT_APP_BACK=http://localhost:3001
-     \`\`\`
+    ```
 
    - Install client dependencies:
 
-     \`\`\`bash
+     ```bash
      cd client
      npm install
-     \`\`\`
+     ```
 
    - Start the React app:
 
-     \`\`\`bash
+     ```bash
      npm start
-     \`\`\`
+     ```
 
    The client will run on `http://localhost:3000`.
 
