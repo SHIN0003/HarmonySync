@@ -1,77 +1,94 @@
 # HarmonySync
-***CURRENTLY WORKING ON DEPLOYING/ working local branch is in tryTwo atm
-HarmonySync is an application that allows users to synchronize their favorite Spotify playlists across different devices. Currently, the app is functional locally and is in the process of being deployed.
 
-## Local Setup
+HarmonySync is an innovative application designed to synchronize your favorite Spotify playlists across various devices. The application is currently operational in a local environment and is being prepared for deployment.
 
-To run HarmonySync locally, you need to set up environment variables for both the client and server. You also need to obtain certain information from your Spotify Developer Dashboard.
+## Getting Started
+
+This app currently only works locally, working ony deployment
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed:
-- [Node.js](https://nodejs.org/)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
+Before setting up HarmonySync, ensure you have the following:
+
+- Node.js: Download and install from [Node.js website](https://nodejs.org/).
+- npm: Included with Node.js installation. Alternatively, visit [npm website](https://www.npmjs.com/).
+
+Additionally, you'll need to create a Spotify Developer account and access your client ID and client secret from the Spotify Developer Dashboard.
 
 ### Installation
 
-Clone the repository to your local machine:
+1. **Clone the Repository**
 
-```bash
-git clone https://github.com/SHIN0003/HarmonySync
-```
+   \`\`\`bash
+   git clone https://github.com/SHIN0003/HarmonySync
+   cd HarmonySync
+   \`\`\`
 
-Navigate to the cloned directory:
+2. **Server Setup**
 
-bash
-Copy code
-cd HarmonySync
-Server Setup
-Inside the server directory, create a .env file with the following variables (replace values with your actual data from Spotify Developer Dashboard):
-plaintext
-Copy code
-SPOTIFY_CLIENT_ID=your_spotify_client_id
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-SPOTIFY_REDIRECT_URI=http://localhost:3001/callback
-SESSION_SECRET=your_session_secret
-FRONT_URL=http://localhost:3000
-Install server dependencies:
-bash
-Copy code
-cd server
-npm install
-Start the server:
-bash
-Copy code
-npm start
-Client Setup
-Inside the client directory, create a .env file with the following variable:
-plaintext
-Copy code
-REACT_APP_BACK=http://localhost:3001
-Install client dependencies:
-bash
-Copy code
-cd client
-npm install
-Start the React app:
-bash
-Copy code
-npm start
-The client will start on http://localhost:3000.
+   - Navigate to the server directory and create a `.env` file with the following structure:
 
-Spotify Developer Dashboard
-To use HarmonySync, you will need to create an application in the Spotify Developer Dashboard and set the Redirect URI to http://localhost:3001/callback.
+     \`\`\`plaintext
+     SPOTIFY_CLIENT_ID=your_spotify_client_id
+     SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+     SPOTIFY_REDIRECT_URI=http://localhost:3001/callback
+     SESSION_SECRET=your_session_secret
+     FRONT_URL=http://localhost:3000
+     \`\`\`
 
-Usage
-Once both the server and client are running, navigate to http://localhost:3000 in your web browser to use the app.
+   - Install server dependencies:
 
-Contributing
-If you would like to contribute to the development of HarmonySync, please follow the standard GitHub workflow:
+     \`\`\`bash
+     cd server
+     npm install
+     \`\`\`
 
-Fork the repository
-Create a new branch for your feature
-Commit changes to your branch
-Push your changes and open a pull request
+   - Start the server:
 
-Contact
-For any additional questions or comments, please reach out through GitHub Issues.
+     \`\`\`bash
+     npm start
+     \`\`\`
+
+3. **Client Setup**
+
+   - Inside the client directory, create a `.env` file with the following content:
+
+     \`\`\`plaintext
+     REACT_APP_BACK=http://localhost:3001
+     \`\`\`
+
+   - Install client dependencies:
+
+     \`\`\`bash
+     cd client
+     npm install
+     \`\`\`
+
+   - Start the React app:
+
+     \`\`\`bash
+     npm start
+     \`\`\`
+
+   The client will run on `http://localhost:3000`.
+
+### Spotify Developer Dashboard
+
+Set up your application in the Spotify Developer Dashboard and ensure the Redirect URI is set to `http://localhost:3001/callback`.
+
+## Usage
+
+After starting both server and client, access HarmonySync at `http://localhost:3000` in your web browser.
+
+## Contributing
+
+To contribute to HarmonySync:
+
+1. Fork the repository.
+2. Create a new branch for your feature.
+3. Commit changes to your branch.
+4. Push your changes and open a pull request.
+
+## Contact
+
+For questions or comments, please use the GitHub Issues section of the repository.
