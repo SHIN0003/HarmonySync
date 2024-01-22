@@ -45,17 +45,17 @@ Additionally, you'll need to create a Spotify Developer account and access your 
 
    - Start the server:
 
-    ```bash
+     ```bash
      npm start
-    ```
+     ```
 
 3. **Client Setup**
 
    - Inside the client directory, create a `.env` file with the following content:
 
-    ```plaintext
+     ```plaintext
      REACT_APP_BACK=http://localhost:3001
-    ```
+     ```
 
    - Install client dependencies:
 
