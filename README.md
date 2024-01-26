@@ -4,7 +4,7 @@ HarmonySync is an innovative application designed to synchronize your favorite S
 
 ## Getting Started
 
-This app currently only works locally, working ony deployment
+This app currently only works locally, working on deployment
 
 ### Prerequisites
 
