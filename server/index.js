@@ -3,7 +3,7 @@ const SpotifyWebApi = require('spotify-web-api-node');
 require('dotenv').config();
 const cors = require('cors');
 const app = express();
-// const session = require('express-session');
+const session = require('express-session');
 // app.use(session({
 //   secret: process.env.SESSION_SECRET,
 //   resave: false,
