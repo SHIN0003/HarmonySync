@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const path = require('path');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 // app.use(session({
 //   secret: process.env.SESSION_SECRET,
 //   resave: false,
@@ -15,6 +16,8 @@ const session = require('express-session');
 //     //domain: '.onrender.com'
 //   }
 // }));
+
+app.use(cookieParser());
 
 app.use(cors({
   origin: process.env.FRONT_URL, // adjust if your frontend port is different
