@@ -154,7 +154,7 @@ app.get('/callback', (req, res) => {
         // In your Express route after successful authentication
         setTimeout(() => {
           console.log('Redirecting to front URL');
-          res.redirect(`${process.env.FRONT_URL}/auth/callback`);
+          res.redirect(`${process.env.FRONT_URL}/auth/callback#access_token=${accessToken}&refresh_token=${refreshToken}`);
         }, 1000);
       }
     });
