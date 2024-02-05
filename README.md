@@ -4,7 +4,11 @@ HarmonySync is an innovative application designed to synchronize your favorite S
 
 ## Getting Started
 
-This app currently only works locally, working on deployment
+### The site is up, but currently requesting quota extension for Spotify, if you want to use your own Spotify account, you have to follow instructions below and download locally. Testing account for site is avalible, if you want to play around.
+
+- [HarmonySync](harmonysync.shin003.com)
+- Email:mysoulkatana@gmail.com
+- Pass:testing123
 
 ### Prerequisites
 
