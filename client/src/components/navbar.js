@@ -3,6 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../contexts/authContext.js';
 import { Navbar, Container } from "react-bootstrap";
 import { Link } from 'react-router-dom';
+import logo from '../assets/spotify-icons-logos/icons/01_RGB/02_PNG/Spotify_Icon_RGB_White.png'
 
 function CustomNavbar() {
     const { handleLogin, handleLogout,fetchUser } = useContext(AuthContext);
@@ -22,7 +23,8 @@ function CustomNavbar() {
             <Container>
                 <Navbar.Brand>
                     <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        Spotify Playlist Generator
+                        <img src= {logo} alt = "logo.png" width={30} height={30}/>
+                        ‎ ‎ Spotify Playlist Generator
                     </Link>
                 </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
